@@ -24,10 +24,9 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
-
+import os,sys,inspect
+sys.path.insert(0,os.path.dirname(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))))
 from scipy import misc
-import sys
-import os
 import argparse
 import tensorflow as tf
 import numpy as np
