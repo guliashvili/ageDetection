@@ -36,6 +36,7 @@ from time import sleep
 import common
 import math
 
+def align(img, points):
 
 def to_rgb(img):
     w, h = img.shape
@@ -85,17 +86,20 @@ def main(args):
                 else:
                     if img.ndim < 2:
                         print('Unable to align "%s"' % image_path)
-                        text_file.write('%s\n' % (output_filename))
+                        #text_file.write('%s\n' % (output_filename))
                         continue
                     if img.ndim == 2:
                         img = to_rgb(img)
                     img = img[:, :, 0:3]
+                    print(img.shape[0])
+                    print(img)
 
                     bounding_boxes, points = detect_face.detect_face(img, minsize, pnet, rnet, onet, threshold,
                                                                 factor)
-                    print(image_path, '\n', bounding_boxes, '\n', points)
+                    #print(image_path, '\n', bounding_boxes, '\n', points)
                     nrof_faces = bounding_boxes.shape[0]
                     if nrof_faces == 1:
+                        points = points[0]
                         det = bounding_boxes[:, 0:4]
                         img_size = np.asarray(img.shape)[0:2]
                         # if nrof_faces > 1:
