@@ -93,7 +93,7 @@ def main(args):
 
                     bounding_boxes, points = detect_face.detect_face(img, minsize, pnet, rnet, onet, threshold,
                                                                 factor)
-                    print(bounding_boxes, '\n', points)
+                    print(image_path, '\n', bounding_boxes, '\n', points)
                     nrof_faces = bounding_boxes.shape[0]
                     if nrof_faces == 1:
                         det = bounding_boxes[:, 0:4]
