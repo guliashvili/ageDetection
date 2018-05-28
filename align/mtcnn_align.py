@@ -118,7 +118,7 @@ def main(args):
                         misc.imsave(output_filename, scaled)
                         text_file.write('%s %d %d %d %d\n' % (output_filename, bb[0], bb[1], bb[2], bb[3]))
 
-    print('Aligned %d/%d' % (nrof_images_total, nrof_successfully_aligned))
+    print('Aligned %d/%d' % (nrof_successfully_aligned, nrof_images_total))
 
 
 def parse_arguments(argv):
