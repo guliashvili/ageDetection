@@ -123,7 +123,7 @@ def main(args):
                 bounding_boxes, points = detect_face.detect_face(img, minsize, pnet, rnet, onet, threshold,
                                                                  factor)
                 if bounding_boxes.shape[0] == 1:
-                    img = align(points, img)
+                    img = align(img, points)
                     bounding_boxes, points = detect_face.detect_face(img, minsize, pnet, rnet, onet, threshold,
                                                                      factor)
                     if bounding_boxes.shape[0] == 1:
