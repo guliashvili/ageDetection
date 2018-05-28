@@ -50,8 +50,8 @@ def align(img, pset):
     x_ = np.array([30.2946, 65.5318, 48.0252, 33.5493, 62.7299])
     y_ = np.array([51.6963, 51.5014, 71.7366, 92.3655, 92.2041])
 
-    x_ = x_.dot(img.shape[1] / 112.0)
-    y_ = y_.dot(img.shape[0] / 86.0)
+    x_ = x_.dot(img.shape[0] / 112.0)
+    y_ = y_.dot(img.shape[1] / 86.0)
 
     src = np.array(zip(x_, y_)).astype(np.float32).reshape(1, 5, 2)
 
@@ -60,7 +60,7 @@ def align(img, pset):
 
     dst = np.array(zip(pset_x, pset_y)).astype(np.float32).reshape(1, 5, 2)
 
-    transmat = cv2.estimateRigidTransform(dst, src, False)
+    transmat = cv2.estimateRigidTransform(dst, src, True)
     print (transmat)
     out = cv2.warpAffine(img, transmat, (imgSize[1], imgSize[0]))
 
