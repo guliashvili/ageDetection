@@ -34,6 +34,7 @@ import detect_face
 import random
 from time import sleep
 import common
+import math
 
 
 def to_rgb(img):
@@ -73,7 +74,8 @@ def main(args):
             nrof_images_total += 1
             filename = os.path.splitext(os.path.split(image_path)[1])[0]
             output_filename = os.path.join(output_dir, filename + '.png')
-            print(image_path)
+            if math.floor(100.0 * nrof_images_total / len(dataset)) != math.floor(100.0 * (nrof_images_total - 1) / len(dataset)):
+                print(math.floor(100.0 * nrof_images_total / len(dataset)), '%')
             if not os.path.exists(output_filename):
                 try:
                     img = misc.imread(image_path)
