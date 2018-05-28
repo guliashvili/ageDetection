@@ -39,7 +39,7 @@ import math
 
 
 def pad(img, margin):
-    margin = int(margin / 2) + 1
+    margin = int(margin / 2) + 2
     return np.pad(img, ((margin, margin), (margin, margin), (0, 0)), 'constant'), margin
 
 
