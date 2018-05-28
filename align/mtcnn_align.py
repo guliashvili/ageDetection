@@ -44,7 +44,7 @@ def pad(img, margin):
 
 
 def align(img, pset):
-    imgSize = (img.shape[0], img.shape[1]])
+    imgSize = (img.shape[0], img.shape[1])
 
     x_ = [30.2946, 65.5318, 48.0252, 33.5493, 62.7299]
     y_ = [51.6963, 51.5014, 71.7366, 92.3655, 92.2041]
