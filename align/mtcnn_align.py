@@ -143,10 +143,10 @@ def main(args):
                     img_size = np.asarray(img.shape)[0:2]
                     det = np.squeeze(det)
                     bb = np.zeros(4, dtype=np.int32)
-                    bb[0] = det[0] - args.margin / 2
-                    bb[1] = det[1] - args.margin / 2
-                    bb[2] = det[2] + args.margin / 2
-                    bb[3] = det[3] + args.margin / 2
+                    bb[0] = det[0] #- args.margin / 2
+                    bb[1] = det[1] #- args.margin / 2
+                    bb[2] = det[2] #+ args.margin / 2
+                    bb[3] = det[3] #+ args.margin / 2
                     cropped = img[bb[1]:bb[3], bb[0]:bb[2], :]
                     scaled = misc.imresize(cropped, (args.image_size, args.image_size), interp='bilinear')
                     nrof_successfully_aligned += 1
