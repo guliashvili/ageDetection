@@ -136,7 +136,7 @@ def main(args):
                     det = bounding_boxes[:, 0:4]
                     #
                     # points += padd
-                    # det += padd
+                    det += padd
 
 
                     img_size = np.asarray(img.shape)[0:2]
