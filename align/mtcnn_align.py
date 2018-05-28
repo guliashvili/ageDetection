@@ -141,6 +141,7 @@ def main(args):
 
                     img_size = np.asarray(img.shape)[0:2]
                     det = np.squeeze(det)
+                    print('det', det)
                     bb = np.zeros(4, dtype=np.int32)
                     bb[0] = det[0] #- args.margin / 2
                     bb[1] = det[1] #- args.margin / 2
