@@ -123,7 +123,7 @@ def main(args):
                     img = to_rgb(img)
                 img = img[:, :, 0:3]
                 print('shape', img.shape)
-                print('img', img)
+                print('img', type(img), img)
 
                 bounding_boxes, points = detect_face.detect_face(img, minsize, pnet, rnet, onet, threshold,
                                                                  factor)
@@ -131,6 +131,7 @@ def main(args):
                 nrof_faces = bounding_boxes.shape[0]
                 if nrof_faces == 1:
                     img, padd = pad(img, args.margin)
+                    print(type(img), img)
 
                     points = points[0]
                     det = bounding_boxes[:, 0:4]
