@@ -152,7 +152,7 @@ def main(args):
                     misc.imsave(output_filename, scaled)
 
 
-print('Aligned %d/%d' % (nrof_successfully_aligned, nrof_images_total))
+    print('Aligned %d/%d' % (nrof_successfully_aligned, nrof_images_total))
 
 
 def parse_arguments(argv):
