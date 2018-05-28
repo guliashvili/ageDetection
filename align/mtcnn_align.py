@@ -134,8 +134,7 @@ def main(args):
 
                     points = points[0]
                     det = bounding_boxes[:, 0:4]
-                    #
-                    # points += padd
+                    points += padd
                     det += padd
 
 
