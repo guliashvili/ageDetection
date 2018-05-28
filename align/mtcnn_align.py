@@ -60,8 +60,10 @@ def align(img, pset):
 
     dst = np.array(zip(pset_x, pset_y)).astype(np.float32).reshape(1, 5, 2)
 
-    transmat = cv2.estimateRigidTransform(dst, src, True)
-    print (transmat)
+    transmat = cv2.estimateRigidTransform(dst, src, False)
+    if transmat is None:
+        transmat = cv2.estimateRigidTransform(dst, src, True)
+   	print('helped')
     out = cv2.warpAffine(img, transmat, (imgSize[1], imgSize[0]))
 
     return out
@@ -119,11 +121,12 @@ def main(args):
                 if img.ndim == 2:
                     img = to_rgb(img)
                 img = img[:, :, 0:3]
-                print('shape', img.shape)
+                #print('shape', img.shape)
 
                 bounding_boxes, points = detect_face.detect_face(img, minsize, pnet, rnet, onet, threshold,
                                                                  factor)
                 if bounding_boxes.shape[0] == 1:
+                    print(image_path)
                     img = align(img, points)
                     misc.imsave(output_filename, img)
                     continue
