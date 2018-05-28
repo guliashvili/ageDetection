@@ -61,7 +61,7 @@ def align(img, pset):
     dst = np.array(zip(pset_x, pset_y)).astype(np.float32).reshape(1, 5, 2)
 
     transmat = cv2.estimateRigidTransform(dst, src, False)
-
+    print (transmat)
     out = cv2.warpAffine(img, transmat, (imgSize[1], imgSize[0]))
 
     return out
