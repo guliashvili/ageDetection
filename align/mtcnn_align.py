@@ -43,31 +43,27 @@ def pad(img, margin):
     return np.pad(img, ((margin, margin), (margin, margin), (0, 0)), 'constant'), margin
 
 
-def align(img):
-    imgSize = (112, 96)
+def align(img, pset):
+    imgSize = img.shape[:, 0:2]
 
     x_ = [30.2946, 65.5318, 48.0252, 33.5493, 62.7299]
     y_ = [51.6963, 51.5014, 71.7366, 92.3655, 92.2041]
 
+    x_ *= img.shape[0] / 112.0
+    y_ *= img.shape[1] / 86.0
+
     src = np.array(zip(x_, y_)).astype(np.float32).reshape(1, 5, 2)
 
-    alignedFaces = []
+    pset_x = pset[0:5]
+    pset_y = pset[5:10]
 
-    # there might be more than one faces, hence
-    # multiple sets of points
-    for pset in points:
-        img2 = img.copy()
+    dst = np.array(zip(pset_x, pset_y)).astype(np.float32).reshape(1, 5, 2)
 
-        pset_x = pset[0:5]
-        pset_y = pset[5:10]
+    transmat = cv2.estimateRigidTransform(dst, src, False)
 
-        dst = np.array(zip(pset_x, pset_y)).astype(np.float32).reshape(1, 5, 2)
+    out = cv2.warpAffine(img, transmat, (imgSize[1], imgSize[0]))
 
-        transmat = cv2.estimateRigidTransform(dst, src, False)
-
-        out = cv2.warpAffine(img2, transmat, (imgSize[1], imgSize[0]))
-
-        alignedFaces.append(out)
+    return out
 
 
 def to_rgb(img):
@@ -126,31 +122,27 @@ def main(args):
 
                 bounding_boxes, points = detect_face.detect_face(img, minsize, pnet, rnet, onet, threshold,
                                                                  factor)
-                print(image_path, '\n', bounding_boxes, '\n', points)
-                nrof_faces = bounding_boxes.shape[0]
-                if nrof_faces == 1:
-                    img, padd = pad(img, args.margin)
-                    print('shape', img.shape)
+                if bounding_boxes.shape[0] == 1:
+                    img = align(points, img)
+                    bounding_boxes, points = detect_face.detect_face(img, minsize, pnet, rnet, onet, threshold,
+                                                                     factor)
+                    if bounding_boxes.shape[0] == 1:
+                        img, padd = pad(img, args.margin)
 
-                    points = points[0]
-                    det = bounding_boxes[:, 0:4]
-                    points += padd
-                    det += padd
+                        det = bounding_boxes[:, 0:4]
+                        det += padd
 
-
-                    img_size = np.asarray(img.shape)[0:2]
-                    det = np.squeeze(det)
-                    print('det', det)
-                    bb = np.zeros(4, dtype=np.int32)
-                    bb[0] = np.maximum(det[0] - args.margin / 2, 0)
-                    bb[1] = np.maximum(det[1] - args.margin / 2, 0)
-                    bb[2] = np.minimum(det[2] + args.margin / 2, img_size[1])
-                    bb[3] = np.minimum(det[3] + args.margin / 2, img_size[0])
-                    cropped = img[bb[1]:bb[3], bb[0]:bb[2], :]
-                    scaled = misc.imresize(cropped, (args.image_size, args.image_size), interp='bilinear')
-                    nrof_successfully_aligned += 1
-                    misc.imsave(output_filename, scaled)
-
+                        img_size = np.asarray(img.shape)[0:2]
+                        det = np.squeeze(det)
+                        bb = np.zeros(4, dtype=np.int32)
+                        bb[0] = np.maximum(det[0] - args.margin / 2, 0)
+                        bb[1] = np.maximum(det[1] - args.margin / 2, 0)
+                        bb[2] = np.minimum(det[2] + args.margin / 2, img_size[1])
+                        bb[3] = np.minimum(det[3] + args.margin / 2, img_size[0])
+                        cropped = img[bb[1]:bb[3], bb[0]:bb[2], :]
+                        scaled = misc.imresize(cropped, (args.image_size, args.image_size), interp='bilinear')
+                        nrof_successfully_aligned += 1
+                        misc.imsave(output_filename, scaled)
 
     print('Aligned %d/%d' % (nrof_successfully_aligned, nrof_images_total))
 
