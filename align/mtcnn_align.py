@@ -89,12 +89,12 @@ def main(args):
                     if img.ndim == 2:
                         img = to_rgb(img)
                     img = img[:, :, 0:3]
-                    print(img.shape[0])
-                    print(img)
+                    print('shape', img.shape)
+                    print('img', img)
 
                     bounding_boxes, points = detect_face.detect_face(img, minsize, pnet, rnet, onet, threshold,
                                                                 factor)
-                    #print(image_path, '\n', bounding_boxes, '\n', points)
+                    print(image_path, '\n', bounding_boxes, '\n', points)
                     nrof_faces = bounding_boxes.shape[0]
                     if nrof_faces == 1:
                         points = points[0]
