@@ -36,6 +36,7 @@ import random
 from time import sleep
 import common
 import math
+import cv2
 
 
 def pad(img, margin):
