@@ -130,13 +130,13 @@ def main(args):
                 print(image_path, '\n', bounding_boxes, '\n', points)
                 nrof_faces = bounding_boxes.shape[0]
                 if nrof_faces == 1:
-                    img, pad = pad(img, margin)
+                    img, padd = pad(img, margin)
 
                     points = points[0]
                     det = bounding_boxes[:, 0:4]
 
-                    points += pad
-                    det += pad
+                    points += padd
+                    det += padd
 
 
                     img_size = np.asarray(img.shape)[0:2]
