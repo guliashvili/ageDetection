@@ -1,0 +1,7 @@
+align/photoOUT/makeup_obstruction.png 287 0 777 521
+align/photoOUT/2_face_1_blured.png 1008 177 1333 588
+align/photoOUT/covered_scalp.png 336 111 648 583
+align/photoOUT/looking_down.png 399 151 547 323
+align/photoOUT/face90degree.png 102 86 328 286
+align/photoOUT/hat.png 367 139 654 510
+align/photoOUT/massage.png 270 229 562 506
