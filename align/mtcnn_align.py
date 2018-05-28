@@ -36,8 +36,6 @@ from time import sleep
 import common
 import math
 
-def align(img, points):
-
 def to_rgb(img):
     w, h = img.shape
     ret = np.empty((w, h, 3), dtype=np.uint8)
