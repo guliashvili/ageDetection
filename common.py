@@ -28,9 +28,9 @@ def gen_bin(dir, clas, testc, trainc):
                     print(name)
                     age, gender, num, _ = name.replace('.', '_').split('_')
                     if clas == 'age':
-                        out = num + ' ' + age + ' ' + name
+                        out = num + '\t' + age + '\t' + name
                     else:
-                        out = num + ' ' + gender + ' ' + name
+                        out = num + '\t' + gender + '\t' + name
 
                     r = random.uniform(0, 1);
                     if r < testc:
