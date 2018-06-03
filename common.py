@@ -39,4 +39,4 @@ def gen_bin(dir, clas, testc, trainc):
                         f = train
                     else:
                         f = valid
-                    f.write(out)
+                    f.write(out + '\n')
