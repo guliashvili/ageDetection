@@ -22,7 +22,7 @@ def gen_bin(dir, clas, testc, trainc):
     images = get_images(dir)
     with open(os.path.join(dir, 'lst_train.lst'), 'w') as train:
         with open(os.path.join(dir, 'lst_test.lst'), 'w') as test:
-            with open(os.path.join(dir, 'lst_test.lst'), 'w') as valid:
+            with open(os.path.join(dir, 'lst_valid.lst'), 'w') as valid:
                 for image in images:
                     name = os.path.basename(image)
                     print(name)
