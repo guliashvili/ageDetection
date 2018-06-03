@@ -1,5 +1,7 @@
 import os
 import re
+import random
+
 
 def get_images(dir):
     dir = os.path.expanduser(dir)
@@ -15,15 +17,25 @@ def get_images(dir):
     return files
 
 
-def gen_bin(dir, clas):
+def gen_bin(dir, clas, testc, trainc):
     images = get_images(dir)
-    with open(os.path.join(dir, 'lst.lst'), 'w') as f:
-        for image in images:
-            name = os.path.basename(image)
-            print(name)
-            age, gender, num, _ = name.replace('.','_').split('_')
+    with open(os.path.join(dir, 'lst_train.lst'), 'w') as train:
+        with open(os.path.join(dir, 'lst_test.lst'), 'w') as test:
+            with open(os.path.join(dir, 'lst_test.lst'), 'w') as valid:
+                for image in images:
+                    name = os.path.basename(image)
+                    print(name)
+                    age, gender, num, _ = name.replace('.', '_').split('_')
+                    if clas == 'age':
+                        out = num + ' ' + age + ' ' + name
+                    else:
+                        out = num + ' ' + gender + ' ' + name
 
-            if clas == 'age':
-                f.write(num + ' ' + age + ' ' + name)
-            else:
-                f.write(num + ' ' + gender + ' ' + name)
+                    r = random.uniform(0, 1);
+                    if r < testc:
+                        f = test
+                    elif r < testc + trainc:
+                        f = train
+                    else:
+                        f = valid
+                    f.write(out)
