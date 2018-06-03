@@ -15,7 +15,7 @@ import mxnet as mx
 
 def get_iterators(batch_size, data_shape=(3, 224, 224)):
     train = mx.io.ImageRecordIter(
-        path_imgrec         = './home/ubuntu/Album2/lst_train.rec',
+        path_imgrec         = '/home/ubuntu/Album2/lst_train.rec',
         data_name           = 'data',
         label_name          = 'softmax_label',
         batch_size          = batch_size,
@@ -24,7 +24,7 @@ def get_iterators(batch_size, data_shape=(3, 224, 224)):
         rand_crop           = True,
         rand_mirror         = True)
     val = mx.io.ImageRecordIter(
-        path_imgrec         = './home/ubuntu/Album2/lst_valid.rec',
+        path_imgrec         = '/home/ubuntu/Album2/lst_valid.rec',
         data_name           = 'data',
         label_name          = 'softmax_label',
         batch_size          = batch_size,
