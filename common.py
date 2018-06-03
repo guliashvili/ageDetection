@@ -18,6 +18,7 @@ def get_images(dir):
 
 
 def gen_bin(dir, clas, testc, trainc):
+    dir = os.path.expanduser(dir)
     images = get_images(dir)
     with open(os.path.join(dir, 'lst_train.lst'), 'w') as train:
         with open(os.path.join(dir, 'lst_test.lst'), 'w') as test:
