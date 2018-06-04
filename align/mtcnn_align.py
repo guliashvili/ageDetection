@@ -75,8 +75,9 @@ def to_rgb(img):
     return ret
 
 
-def main(args):
+def main(args, i, al):
     sleep(random.random())
+    print('thread ' + str(i) + ' runing out of ' + str(al))
     output_dir = os.path.expanduser(args.output_dir)
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -99,6 +100,8 @@ def main(args):
     nrof_images_total = 0
     nrof_successfully_aligned = 0
     for image_path in dataset:
+        if hash(image_path) % al != i:
+            continue
         nrof_images_total += 1
         filename = os.path.splitext(os.path.split(image_path)[1])[0]
         output_filename = os.path.join(output_dir, filename + '.png')
@@ -162,8 +165,17 @@ def parse_arguments(argv):
                         help='Margin for the crop around the bounding box (height, width) in pixels.', default=44)
     parser.add_argument('--gpu_memory_fraction', type=float,
                         help='Upper bound on the amount of GPU memory that will be used by the process.', default=1.0)
+    parser.add_argument('--thread', type=int,
+                        help='Upper bound on the amount of GPU memory that will be used by the process.', default=10)
     return parser.parse_args(argv)
 
+import threading
 
 if __name__ == '__main__':
-    main(parse_arguments(sys.argv[1:]))
+    argv = parse_arguments(sys.argv[1:])
+    threads = [threading.Thread(target = main, args=(argv,i,argv.thread)) for i in range(argv.thread)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+    main()
