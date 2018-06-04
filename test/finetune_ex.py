@@ -79,7 +79,7 @@ def fit(symbol, arg_params, aux_params, train, val, batch_size, num_gpus):
 
 num_classes = 256
 batch_per_gpu = 16
-num_gpus = 8
+num_gpus = 4
 
 (new_sym, new_args) = get_fine_tune_model(sym, arg_params, num_classes)
 
