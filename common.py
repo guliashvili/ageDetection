@@ -15,28 +15,3 @@ def get_images(dir):
             and not file.endswith('.bin')]
 
     return files
-
-
-def gen_bin(dir, clas, testc, trainc):
-    dir = os.path.expanduser(dir)
-    images = get_images(dir)
-    with open(os.path.join(dir, 'lst_train.lst'), 'w') as train:
-        with open(os.path.join(dir, 'lst_test.lst'), 'w') as test:
-            with open(os.path.join(dir, 'lst_valid.lst'), 'w') as valid:
-                for image in images:
-                    name = os.path.basename(image)
-                    print(name)
-                    age, gender, num, _ = name.replace('.', '_').split('_')
-                    if clas == 'age':
-                        out = num + '\t' + age + '\t' + name
-                    else:
-                        out = num + '\t' + gender + '\t' + name
-
-                    r = random.uniform(0, 1);
-                    if r < testc:
-                        f = test
-                    elif r < testc + trainc:
-                        f = train
-                    else:
-                        f = valid
-                    f.write(out + '\n')
