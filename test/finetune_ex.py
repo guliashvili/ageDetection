@@ -25,7 +25,7 @@ def main(args):
             data_shape          = data_shape,
             shuffle             = True,
             rand_crop           = True,
-            rand_mirror         = True)
+            rand_mirror         = False)
         val = mx.io.ImageRecordIter(
             path_imgrec         = args.lst + 'valid.rec',
             data_name           = 'data',
