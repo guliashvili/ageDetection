@@ -172,9 +172,9 @@ def main():
     newlines = [(x.split()[0], int(x.split()[1])) for x in list(filter(None, open('strip.name', 'r')
                 .read().split('\n')))]
 
-    cpus = multiprocessing.cpu_count()*20
+    cpus = multiprocessing.cpu_count()*10
     pool = multiprocessing.Pool(processes=cpus)
-    data = pool.map(doit, newlines)
+    data = pool.map(doit, newlines[:1000])
 
     with open('data.txt', 'w') as f:
         json.dump(data, f, ensure_ascii=False)
