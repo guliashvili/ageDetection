@@ -118,7 +118,7 @@ def imgs(id):
 
 def doit(idbirth):
     id = idbirth[0]
-    birth = birth[1]
+    birth = idbirth[1]
     sex = getSex(id)
     print(id, sex)
 
