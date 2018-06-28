@@ -1,6 +1,8 @@
 import urllib.request
 from bs4 import BeautifulSoup
 from multiprocessing import Pool
+import multiprocessing
+
 
 def count(s, w):
     c = 0
@@ -151,11 +153,14 @@ def main():
     #     for id, birth in newlines:
     #         f.write(str(id) + ' ' + str(birth) + '\n')
 
-    newlines = [x.split() for x in list(filter(None, open('strip.name', 'r')
+    newlines = [(x.split()[0], int(x.split()[1])) for x in list(filter(None, open('strip.name', 'r')
                 .read().split('\n')))]
 
-    for i in range(1):
-        doit(newlines[i][0], int(newlines[i][1]))
+    cpus = multiprocessing.cpu_count()
+    pool = multiprocessing.Pool(processes=cpus)
+    data = pool.map(doit, newlines)
+    print(data)
+
 
 
 if __name__ == "__main__":
