@@ -1,3 +1,4 @@
+imdbcrawl/name.basics.tsv
 *.pyc
 *.DS_Store*
 .idea/*

@@ -113,10 +113,17 @@ def imgs(id):
 
     return lst
 
+
 def doit(id, birth):
     sex = getSex(id)
     print(id, sex)
 
+    img_lst = imgs(id)
+    img_lst = [(img, year - birth) for img, year in img_lst]
+
+    ret = {id: (sex, img_lst)}
+    print(ret)
+    return ret
 
 
 def main():
@@ -147,7 +154,7 @@ def main():
     newlines = [x.split() for x in list(filter(None, open('strip.name', 'r')
                 .read().split('\n')))]
 
-    for i in range(100):
+    for i in range(1):
         doit(newlines[i][0], newlines[i][1])
 
 
