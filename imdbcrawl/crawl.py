@@ -22,6 +22,7 @@ def getSex(id):
             response = urllib.request.urlopen('https://www.imdb.com/name/{}/bio'.format(id))
         except:
             print("Unexpected error:", sys.exc_info()[0])
+            print('sleeping https://www.imdb.com/name/{}/bio'.format(id))
             time.sleep(2)
             continue
 
@@ -104,6 +105,7 @@ def imgspage(id, page):
             response = urllib.request.urlopen(url)
         except:
             print("Unexpected error:", sys.exc_info()[0])
+            print('sleeping https://www.imdb.com/name/{}/mediaindex?page={}'.format(id, page))
             time.sleep(2)
             continue
 
