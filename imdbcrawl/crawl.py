@@ -26,6 +26,93 @@ def getSex(id):
     else:
         return 'M'
 
+def get_img_link(src):
+    if not src.endswith('.jpg'):
+        print(src[-4])
+        return None
+
+    while len(src) > 0 and not src.endswith('V1_'):
+        src = src[:-1]
+
+    if len(src) == 0:
+        return None
+    src += '.jpg'
+
+    return src
+
+
+def get_year(alt):
+    for i in range(len(alt) - 3):
+        sub = alt[i : i + 4]
+        if not sub.isdigit():
+            continue
+
+        year = int(sub)
+        if year < 1800 or year > 2018:
+            continue
+
+        if i + 4 < len(alt) and alt[i + 4].isalpha():
+            continue
+
+        return year
+
+    return None
+
+
+def get_pic(ahref):
+    img = ahref.find_all('img', alt=True, src=True)
+    if len(img) != 1:
+        return None
+    img = [i for i in img][0]
+    alt = img['alt']
+    src = img['src']
+
+    img = get_img_link(src)
+    if img is None:
+        return None
+
+    year = get_year(alt)
+    if year is None:
+        return None
+
+    return (img, year)
+
+
+def imgspage(id, page):
+    lst = []
+    url = 'https://www.imdb.com/name/{}/mediaindex?page={}'.format(id, page)
+    response = urllib.request.urlopen(url)
+    html = response.read().decode('utf-8')
+    soup = BeautifulSoup(html, 'lxml')
+
+    div_avatars = soup.findAll("div", {"class": "media_index_thumb_list"})
+    if len(div_avatars) != 1:
+        return []
+
+    div_avatars = [x for x in div_avatars][0]
+
+    separate_avatars = div_avatars.find_all('a', href=True)
+
+    for separate_avatar in separate_avatars:
+        g = get_pic(separate_avatar)
+        if g is not None:
+            lst.append(g)
+
+    return lst
+
+
+def imgs(id):
+    lst = []
+    i = 1
+    while True:
+        r = imgspage(id, i)
+        if len(r) == 0:
+            break
+        lst += r
+        i += 1
+
+    return lst
+
 def doit(id, birth):
     sex = getSex(id)
     print(id, sex)
