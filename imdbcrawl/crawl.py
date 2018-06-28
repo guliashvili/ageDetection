@@ -2,7 +2,8 @@ import urllib.request
 from bs4 import BeautifulSoup
 from multiprocessing import Pool
 import multiprocessing
-
+import time
+import json
 
 def count(s, w):
     c = 0
@@ -15,7 +16,14 @@ def count(s, w):
     return c
 
 def getSex(id):
-    response = urllib.request.urlopen('https://www.imdb.com/name/{}/bio'.format(id))
+    while True:
+        response = urllib.request.urlopen('https://www.imdb.com/name/{}/bio'.format(id))
+        if response.getcode() != 200:
+            print('sleeping https://www.imdb.com/name/{}/bio'.format(id))
+            time.sleep(2)
+        else:
+            break
+
     html = response.read().decode('utf-8')
     html = html.lower()
     shecount = count(html, 'she') + count(html, 'her') + count(html, 'actress')
@@ -84,7 +92,14 @@ def get_pic(ahref):
 def imgspage(id, page):
     lst = []
     url = 'https://www.imdb.com/name/{}/mediaindex?page={}'.format(id, page)
-    response = urllib.request.urlopen(url)
+    while True:
+        response = urllib.request.urlopen(url)
+        if response.getcode() != 200:
+            print('sleeping https://www.imdb.com/name/{}/mediaindex?page={}'.format(id, page))
+            time.sleep(2)
+        else:
+            break
+
     html = response.read().decode('utf-8')
     soup = BeautifulSoup(html, 'lxml')
 
@@ -121,7 +136,6 @@ def doit(idbirth):
     id = idbirth[0]
     birth = idbirth[1]
     sex = getSex(id)
-    print(id, sex)
 
     img_lst = imgs(id)
     img_lst = [(img, year - birth) for img, year in img_lst]
@@ -161,8 +175,10 @@ def main():
 
     cpus = multiprocessing.cpu_count()*100
     pool = multiprocessing.Pool(processes=cpus)
-    data = pool.map(doit, newlines)
-    print(data)
+    data = pool.map(doit, newlines[:10])
+
+    with open('data.txt', 'w') as f:
+        json.dump(data, f, ensure_ascii=False)
 
 
 
