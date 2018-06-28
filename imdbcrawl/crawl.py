@@ -21,9 +21,7 @@ def getSex(id):
     shecount = count(html, 'she') + count(html, 'her')
     hecount = count(html, 'he') + count(html, 'his') + count(html, 'him')
 
-    if shecount + hecount < 10:
-        return None
-    elif shecount > hecount:
+    if shecount > hecount:
         return 'F'
     else:
         return 'M'
