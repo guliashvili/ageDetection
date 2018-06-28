@@ -155,7 +155,7 @@ def main():
                 .read().split('\n')))]
 
     for i in range(1):
-        doit(newlines[i][0], newlines[i][1])
+        doit(newlines[i][0], int(newlines[i][1]))
 
 
 if __name__ == "__main__":
