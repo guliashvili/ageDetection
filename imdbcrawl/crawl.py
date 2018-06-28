@@ -14,7 +14,7 @@ def count(s, w):
 
 def getSex(id):
     response = urllib.request.urlopen('https://www.imdb.com/name/{}/bio'.format(id))
-    html = response.read()
+    html = response.read().decode('utf-8')
     html = html.lower()
     shecount = count(html, 'she') + count(html, 'her')
     hecount = count(html, 'he') + count(html, 'his') + count(html, 'him')
