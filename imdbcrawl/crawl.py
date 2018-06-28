@@ -1,5 +1,5 @@
-import urllib
-#from bs4 import BeautifulSoup
+import urllib.request
+from bs4 import BeautifulSoup
 from multiprocessing import Pool
 
 def count(s, w):
