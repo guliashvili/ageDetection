@@ -5,7 +5,7 @@ from multiprocessing import Pool
 def count(s, w):
     c = 0
     for i in range(0, len(s) - len(w) - 1):
-        if s[i].isalpha() or s[i + len(w)].isalpha():
+        if s[i].isalpha() or s[i + len(w) + 1].isalpha():
             continue
         else:
             if s[i + 1:i + len(w) + 1] == w:
