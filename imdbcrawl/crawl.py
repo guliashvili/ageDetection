@@ -18,8 +18,8 @@ def getSex(id):
     response = urllib.request.urlopen('https://www.imdb.com/name/{}/bio'.format(id))
     html = response.read().decode('utf-8')
     html = html.lower()
-    shecount = count(html, 'she') + count(html, 'her') + count('actress')
-    hecount = count(html, 'he') + count(html, 'his') + count(html, 'him') + count('actor')
+    shecount = count(html, 'she') + count(html, 'her') + count(html, 'actress')
+    hecount = count(html, 'he') + count(html, 'his') + count(html, 'him') + count(html, 'actor')
 
 
     if shecount - 2 > hecount:
