@@ -141,7 +141,6 @@ def doit(idbirth):
     img_lst = [(img, year - birth) for img, year in img_lst]
 
     ret = {id: (sex, img_lst)}
-    print(ret)
     return ret
 
 
@@ -173,7 +172,7 @@ def main():
     newlines = [(x.split()[0], int(x.split()[1])) for x in list(filter(None, open('strip.name', 'r')
                 .read().split('\n')))]
 
-    cpus = multiprocessing.cpu_count()*100
+    cpus = multiprocessing.cpu_count()*20
     pool = multiprocessing.Pool(processes=cpus)
     data = pool.map(doit, newlines[:10])
 
