@@ -174,7 +174,7 @@ def main():
 
     cpus = multiprocessing.cpu_count()*20
     pool = multiprocessing.Pool(processes=cpus)
-    data = pool.map(doit, newlines[:10])
+    data = pool.map(doit, newlines)
 
     with open('data.txt', 'w') as f:
         json.dump(data, f, ensure_ascii=False)
