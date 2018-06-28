@@ -4,6 +4,7 @@ from multiprocessing import Pool
 import multiprocessing
 import time
 import json
+import sys
 
 def count(s, w):
     c = 0
@@ -17,7 +18,13 @@ def count(s, w):
 
 def getSex(id):
     while True:
-        response = urllib.request.urlopen('https://www.imdb.com/name/{}/bio'.format(id))
+        try:
+            response = urllib.request.urlopen('https://www.imdb.com/name/{}/bio'.format(id))
+        except:
+            print("Unexpected error:", sys.exc_info()[0])
+            time.sleep(2)
+            continue
+
         if response.getcode() != 200:
             print('sleeping https://www.imdb.com/name/{}/bio'.format(id))
             time.sleep(2)
@@ -93,7 +100,13 @@ def imgspage(id, page):
     lst = []
     url = 'https://www.imdb.com/name/{}/mediaindex?page={}'.format(id, page)
     while True:
-        response = urllib.request.urlopen(url)
+        try:
+            response = urllib.request.urlopen(url)
+        except:
+            print("Unexpected error:", sys.exc_info()[0])
+            time.sleep(2)
+            continue
+
         if response.getcode() != 200:
             print('sleeping https://www.imdb.com/name/{}/mediaindex?page={}'.format(id, page))
             time.sleep(2)
