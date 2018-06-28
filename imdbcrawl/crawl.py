@@ -116,7 +116,9 @@ def imgs(id):
     return lst
 
 
-def doit(id, birth):
+def doit(idbirth):
+    id = idbirth[0]
+    birth = birth[1]
     sex = getSex(id)
     print(id, sex)
 
