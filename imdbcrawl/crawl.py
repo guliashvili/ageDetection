@@ -23,12 +23,12 @@ def getSex(id):
         except:
             print("Unexpected error:", sys.exc_info()[0])
             print('sleeping https://www.imdb.com/name/{}/bio'.format(id))
-            time.sleep(2)
+            time.sleep(60)
             continue
 
         if response.getcode() != 200:
             print('sleeping https://www.imdb.com/name/{}/bio'.format(id))
-            time.sleep(2)
+            time.sleep(60)
         else:
             break
 
@@ -106,12 +106,12 @@ def imgspage(id, page):
         except:
             print("Unexpected error:", sys.exc_info()[0])
             print('sleeping https://www.imdb.com/name/{}/mediaindex?page={}'.format(id, page))
-            time.sleep(2)
+            time.sleep(60)
             continue
 
         if response.getcode() != 200:
             print('sleeping https://www.imdb.com/name/{}/mediaindex?page={}'.format(id, page))
-            time.sleep(2)
+            time.sleep(60)
         else:
             break
 
@@ -187,7 +187,7 @@ def main():
     newlines = [(x.split()[0], int(x.split()[1])) for x in list(filter(None, open('strip.name', 'r')
                 .read().split('\n')))]
 
-    cpus = multiprocessing.cpu_count()*10
+    cpus = multiprocessing.cpu_count()*5
     pool = multiprocessing.Pool(processes=cpus)
     data = pool.map(doit, newlines[:1000])
 
