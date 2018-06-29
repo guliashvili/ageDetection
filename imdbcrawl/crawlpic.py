@@ -15,7 +15,7 @@ def gm(link):
 
 
 lst = json.loads(open('data.txt', 'r').read())
-lst = {elem.keys()[0]:elem.values()[0] for elem in lst}
+lst = {list(elem.keys())[0]:list(elem.values())[0] for elem in lst}
 
 num_of_pic = 0
 for _, value in lst.items():
