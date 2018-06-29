@@ -151,10 +151,15 @@ def doit(idbirth):
     id = idbirth[0]
     birth = idbirth[1]
     print(id,'-')
-    sex = getSex(id)
 
     img_lst = imgs(id)
+    if len(img_lst) == 0:
+        return None
     img_lst = [(img, year - birth) for img, year in img_lst]
+
+    sex = getSex(id)
+    if sex is None:
+        return None
 
     ret = {id: (sex, img_lst)}
     print(id,'+')
@@ -192,7 +197,9 @@ def main():
     data = []
 
     for i in range(len(newlines)):
-        data.append(doit(newlines[i]))
+        res = doit(newlines[i])
+        if res is not None:
+            data.append(res)
         if len(data) % 10000 == 0:
             with open('data{}.txt'.format(len(data)), 'w') as f:
                 json.dump(data, f, ensure_ascii=False)
