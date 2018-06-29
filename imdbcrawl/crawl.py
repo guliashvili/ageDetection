@@ -156,6 +156,7 @@ def doit(idbirth):
     img_lst = [(img, year - birth) for img, year in img_lst]
 
     ret = {id: (sex, img_lst)}
+    print(id)
     return ret
 
 
