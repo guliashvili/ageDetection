@@ -150,13 +150,14 @@ def imgs(id):
 def doit(idbirth):
     id = idbirth[0]
     birth = idbirth[1]
+    print(id,'-')
     sex = getSex(id)
 
     img_lst = imgs(id)
     img_lst = [(img, year - birth) for img, year in img_lst]
 
     ret = {id: (sex, img_lst)}
-    print(id)
+    print(id,'+')
     return ret
 
 
