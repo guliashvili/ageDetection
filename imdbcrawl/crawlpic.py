@@ -25,4 +25,4 @@ print(num_of_pic)
 for id, value in lst.items():
     sex = value[0]
     for link, age in value[1]:
-        urllib.urlretrieve(link, "imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)))
+        urllib.request.urlretrieve(link, "imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)))
