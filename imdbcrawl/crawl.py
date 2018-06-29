@@ -202,8 +202,8 @@ def main():
 
     data = []
     le = len(newlines)
-    s = le * ME / SUL
-    e = min(le, le * (ME + 1) / SUL)
+    s = int(le * ME / SUL)
+    e = min(le, int(le * (ME + 1) / SUL))
     for i in range(s, e):
         res = doit(newlines[i])
         if res is not None:
