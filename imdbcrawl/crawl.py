@@ -211,7 +211,7 @@ def main():
         if len(data) % 10 == 0:
             sys.stdout.flush()
 
-    with open('data.txt', 'w') as f:
+    with open('data{}.txt'.format(ME), 'w') as f:
         json.dump(data, f, ensure_ascii=False)
 
 
