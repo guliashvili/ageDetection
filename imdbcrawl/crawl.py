@@ -193,6 +193,12 @@ def main():
     pool = multiprocessing.Pool(processes=cpus)
     data = pool.map(doit, newlines[:1000])
 
+    for i in range(len(newlines)):
+        data.append(doit(newlines[i]))
+        if len(data) % 10000 == 0:
+            with open('data{}.txt'.format(len(data)), 'w') as f:
+                json.dump(data, f, ensure_ascii=False)
+
     with open('data.txt', 'w') as f:
         json.dump(data, f, ensure_ascii=False)
 
