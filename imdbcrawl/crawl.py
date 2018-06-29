@@ -189,7 +189,7 @@ def main():
     newlines = [(x.split()[0], int(x.split()[1])) for x in list(filter(None, open('strip.name', 'r')
                 .read().split('\n')))]
 
-    cpus = multiprocessing.cpu_count()*10
+    cpus = multiprocessing.cpu_count()*2
     pool = multiprocessing.Pool(processes=cpus)
     data = pool.map(doit, newlines[:1000])
 
