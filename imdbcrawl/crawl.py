@@ -1,3 +1,7 @@
+ME = 0
+SUL = 15
+
+
 import urllib.request
 from bs4 import BeautifulSoup
 from multiprocessing import Pool
@@ -5,6 +9,8 @@ import multiprocessing
 import time
 import json
 import sys
+
+
 
 def count(s, w):
     c = 0
@@ -195,14 +201,13 @@ def main():
                 .read().split('\n')))]
 
     data = []
-
-    for i in range(len(newlines)):
+    le = len(newlines)
+    s = le * ME / SUL
+    e = min(le, le * (ME + 1) / SUL)
+    for i in range(s, e):
         res = doit(newlines[i])
         if res is not None:
             data.append(res)
-        if len(data) % 10000 == 0:
-            with open('data{}.txt'.format(len(data)), 'w') as f:
-                json.dump(data, f, ensure_ascii=False)
         if len(data) % 10 == 0:
             sys.stdout.flush()
 
