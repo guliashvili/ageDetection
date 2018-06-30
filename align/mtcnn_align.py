@@ -53,12 +53,12 @@ def align(img, pset):
     x_ = x_.dot(img.shape[1] / 86.0)
     y_ = y_.dot(img.shape[0] / 112.0)
 
-    src = np.array(zip(x_, y_)).astype(np.float32).reshape(1, 5, 2)
+    src = np.array(list(zip(x_, y_))).astype(np.float32).reshape(1, 5, 2)
 
     pset_x = pset[0:5]
     pset_y = pset[5:10]
 
-    dst = np.array(zip(pset_x, pset_y)).astype(np.float32).reshape(1, 5, 2)
+    dst = np.array(list(zip(pset_x, pset_y))).astype(np.float32).reshape(1, 5, 2)
 
     transmat = cv2.estimateRigidTransform(dst, src, False)
     if transmat is None:
