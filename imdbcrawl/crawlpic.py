@@ -51,7 +51,7 @@ def get_items():
             if age < 5 or age > 100:
                 continue
             if links[link] == 1:
-                items2.add((id, link, age, sex))
+                items2.append((id, link, age, sex))
 
     items = items2
     items2 = None
