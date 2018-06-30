@@ -71,7 +71,6 @@ def download(i):
     printed = 0
 
     for id, link, age, sex in items:
-        print(id, link,age,sex)
         try:
             #print(link,age)
             processed += 1
