@@ -155,7 +155,7 @@ def main(args, i, al):
         if math.floor(100.0 * nrof_images_total / len(dataset)) != math.floor(
                 100.0 * (nrof_images_total - 1) / len(dataset)):
             print(math.floor(100.0 * nrof_images_total / len(dataset)), '%')
-        if get_face(args.margin, args.img_size, args.output_dir, i, al, image_path, pnet, rnet, onet):
+        if get_face(args.margin, args.image_size, args.output_dir, i, al, image_path, pnet, rnet, onet):
             nrof_successfully_aligned += 1
 
     print('Aligned %d/%d' % (nrof_successfully_aligned, nrof_images_total))
