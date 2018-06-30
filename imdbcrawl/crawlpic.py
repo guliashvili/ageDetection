@@ -28,7 +28,7 @@ def download(item):
 
     sex = value[0]
     for link, age in value[1]:
-        urllib.request. vurlretrieve(link, "imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)))
+        urllib.request.urlretrieve(link, "imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)))
 
 p = Pool(50)
 p.map(download, lst.items())
