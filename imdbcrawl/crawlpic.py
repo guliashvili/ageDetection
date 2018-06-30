@@ -46,7 +46,7 @@ def download(i):
             try:
                 if age < 5 or age > 100:
                     continue
-                print(link,age)
+                #print(link,age)
                 processed += 1
                 if processed % 1000 == 0:
                     print("Thread {}: printed {} / {}".format(i, printed, processed))
@@ -82,7 +82,7 @@ def download(i):
 
                 points = results[1]
                 if len(points) != 1:
-                    cv2.imwrite("imgsl/{}_{}_{}_{}{}.jpg".format(len(points),age, sex, id, gm(link)), imgc)
+                    #cv2.imwrite("imgsl/{}_{}_{}_{}{}.jpg".format(len(points),age, sex, id, gm(link)), imgc)
                     continue
 
                 # extract aligned face chips
@@ -97,7 +97,7 @@ def download(i):
 
 # download(0)
 
-procs = [Process(target=download, args = (i,)) for i in range(CPU)]
+procs = [Process(target=download, args = (i,)) for i in range(int(CPU/2))]
 for p in procs:
     p.start()
 for p in procs:
