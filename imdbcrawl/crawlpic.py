@@ -30,7 +30,7 @@ def download(i):
     detector = MtcnnDetector(model_folder='model', num_worker = int(CPU/4.5) , accurate_landmark = False)
     lst = json.loads(open('data.txt', 'r').read())
     lst = {list(elem.keys())[0]:list(elem.values())[0] for elem in lst}
-    items = list(lst.items())
+    items = list(lst.items())[:1000]
     le = len(items)
     items = items[int(le * i / CPU): min(le, int(le * (i + 1) / CPU))]
 
