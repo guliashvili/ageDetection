@@ -72,7 +72,7 @@ def download(i):
                 mult = max(0.5, 1000.0/max(height,width))
                 imgc = cv2.resize(imgc, (0,0), fx=mult, fy=mult)
             if height + width > 1000:
-                imgc = cv2.GaussianBlur(imgc, (2,2), 0)
+                imgc = cv2.GaussianBlur(imgc, (3,3), 0)
 
             # run detector
             results = detector.detect_face(imgc)
