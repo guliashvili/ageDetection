@@ -6,6 +6,7 @@ import requests
 # import urllib
 import traceback
 import time
+import random
 import json
 import sys
 import mxnet as mx
@@ -60,6 +61,7 @@ def get_items():
 
     return items
 def download(i):
+    time.sleep(random.random()*10)
     detector = MtcnnDetector(model_folder='model', num_worker = CPU , accurate_landmark = False)
     items = get_items()
     print(len(items))
@@ -95,7 +97,7 @@ def download(i):
             #decode the array into an image
             imgc = cv2.imdecode(imgc, cv2.IMREAD_UNCHANGED)
             if len(imgc.shape) == 2:
-                imgc = cv2.cvtColor(imgc, cv2.CV_GRAY2RGB)
+                imgc = cv2.cvtColor(gray,cv2.COLOR_GRAY2RGB)
             height, width, _ = imgc.shape
             if height + width > 1700:
                 mult = min(0.5, 1000.0/max(height,width))
