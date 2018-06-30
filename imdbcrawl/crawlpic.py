@@ -49,24 +49,28 @@ def download(i):
 
             while True:
                 try:
-                    imgcA = requests.get(link)
-                    if imgcA.status_code != requests.codes.ok:
+                    imgc = requests.get(link)
+                    if imgc.status_code != requests.codes.ok:
                         print('oh1')
                         raise Exception('ax')
-                    imgc = imgcA.content
+                    imgc = imgc.content
                     break
                 except:
                     print('oh2')
                     time.sleep(60)
                     continue
 
-            x = np.fromstring(imgc, dtype='uint8')
+            imgc = np.fromstring(imgc, dtype='uint8')
 
             #decode the array into an image
-            img = cv2.imdecode(x, cv2.IMREAD_UNCHANGED)
+            imgc = cv2.imdecode(imgc, cv2.IMREAD_UNCHANGED)
+            height, width, _ = imgc.shape
+            if height + width > 2000:
+                mult = max(0.5, 1/min(height/1000, width/1000))
+                imgc = cv2.resize(imgc, (0,0), fx=mult, fy=mult)
 
             # run detector
-            results = detector.detect_face(img)
+            results = detector.detect_face(imgc)
             if results is None:
                 continue
 
@@ -75,8 +79,8 @@ def download(i):
                 continue
 
             # extract aligned face chips
-            chips = detector.extract_image_chips(img, points, 255, 0.37)
-            for chip in chips:
+            imgc = detector.extract_image_chips(imgc, points, 255, 0.37)
+            for chip in imgc:
                 printed += 1
                 cv2.imwrite("imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)), chip)\
 
