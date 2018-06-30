@@ -4,6 +4,7 @@ CPU = int(72/4.5)
 #import urllib.request
 import requests
 # import urllib
+import traceback
 import time
 import json
 import sys
@@ -117,7 +118,7 @@ def download(i):
                 cv2.imwrite("imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)), chip)
 
         except:
-            print("Thread {} Unexpected error: {}".format(i, sys.exc_info()[0]))
+            print("Thread {} Unexpected error: {} {}".format(i, sys.exc_info()[0]), traceback.format_exc())
 
 
 # download(0)
