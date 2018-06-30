@@ -28,11 +28,6 @@ def gm(link):
     return link
 
 
-def doit(img, output_filename, detector):
-
-
-
-
 def download(i):
     lst = json.loads(open('data.txt', 'r').read())
     lst = {list(elem.keys())[0]:list(elem.values())[0] for elem in lst}
