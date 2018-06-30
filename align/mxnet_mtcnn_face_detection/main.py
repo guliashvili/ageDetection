@@ -43,6 +43,6 @@ for imgp in dataset:
             continue
 
         # extract aligned face chips
-        chips = detector.extract_image_chips(img, points, 144, 0.37)
+        chips = detector.extract_image_chips(img, points, 255, 0.37)
         for chip in chips:
             cv2.imwrite(output_filename, chip)
