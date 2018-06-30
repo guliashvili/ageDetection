@@ -4,8 +4,6 @@ CPU = 1
 #import urllib.request
 import requests
 # import urllib
-from multiprocessing import Pool
-import multiprocessing
 import time
 import json
 import sys
@@ -18,7 +16,6 @@ import os
 import re
 import random
 import numpy as np
-from multiprocessing import Process, Lock
 
 def gm(link):
     link = link.split('/images/M/')[1]
@@ -29,6 +26,7 @@ def gm(link):
 
 
 def download(i):
+    detector = MtcnnDetector(model_folder='model', ctx=mx.cpu(0), num_worker = 1 , accurate_landmark = False)
     lst = json.loads(open('data.txt', 'r').read())
     lst = {list(elem.keys())[0]:list(elem.values())[0] for elem in lst}
     items = list(lst.items())[:10]
@@ -44,7 +42,6 @@ def download(i):
 
         sex = value[0]
         for link, age in value[1]:
-            detector = MtcnnDetector(model_folder='model', ctx=mx.cpu(0), num_worker = 1 , accurate_landmark = False)
             print(link,age)
             processed += 1
             if processed % 1000 == 0:

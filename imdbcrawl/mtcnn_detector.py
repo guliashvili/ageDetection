@@ -238,7 +238,7 @@ class MtcnnDetector(object):
         sliced_index = self.slice_index(len(scales))
         total_boxes = []
         for batch in sliced_index:
-            local_boxes = self.Pool.map( detect_first_stage_warpper, \
+            local_boxes = map( detect_first_stage_warpper, \
                     izip(repeat(img), self.PNets[:len(batch)], [scales[i] for i in batch], repeat(self.threshold[0])) )
             total_boxes.extend(local_boxes)
 
