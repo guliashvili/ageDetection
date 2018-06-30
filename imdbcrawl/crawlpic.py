@@ -1,4 +1,4 @@
-CPU = int(72/8)
+CPU = int(72/8 - 1)
 
 
 #import urllib.request
@@ -79,7 +79,7 @@ def download(i):
             if processed % 100 == 0:
                 print("Thread {}: printed {} / {}".format(i, printed, processed))
 
-            while True:
+            for _ in range(3):
                 try:
                     imgc = requests.get(link)
                     if imgc.status_code != requests.codes.ok:
