@@ -34,7 +34,7 @@ def download(i):
     items = list(lst.items())[:10]
     le = len(items)
     items = items[int(le * i / CPU): min(le, int(le * (i + 1) / CPU)) ]
-    detector = MtcnnDetector(model_folder='model', ctx=mx.cpu(0), num_worker = 1 , accurate_landmark = False)
+
     processed = 0
     printed = 0
 
@@ -44,6 +44,7 @@ def download(i):
 
         sex = value[0]
         for link, age in value[1]:
+            detector = MtcnnDetector(model_folder='model', ctx=mx.cpu(0), num_worker = 1 , accurate_landmark = False)
             print(link,age)
             processed += 1
             if processed % 1000 == 0:
