@@ -1,4 +1,4 @@
-CPU = 2
+CPU = 1
 
 
 #import urllib.request
@@ -44,6 +44,7 @@ def download(i):
 
         sex = value[0]
         for link, age in value[1]:
+            print(link,age)
             processed += 1
             if processed % 1000 == 0:
                 print("Thread {}: printed {} / {}".format(i, printed, processed))
@@ -82,9 +83,10 @@ def download(i):
                 cv2.imwrite("imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)), chip)\
 
 
-
-procs = [Process(target=download, args = (i,)) for i in range(CPU)]
-for p in procs:
-    p.start()
-for p in procs:
-    p.join()
+download(0)
+#
+# procs = [Process(target=download, args = (i,)) for i in range(CPU)]
+# for p in procs:
+#     p.start()
+# for p in procs:
+#     p.join()
