@@ -76,7 +76,7 @@ def download(i):
         try:
             #print(link,age)
             processed += 1
-            if processed % 1000 == 0:
+            if processed % 100 == 0:
                 print("Thread {}: printed {} / {}".format(i, printed, processed))
 
             while True:
