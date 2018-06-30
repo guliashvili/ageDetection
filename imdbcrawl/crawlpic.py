@@ -76,7 +76,7 @@ def download(i):
 
             points = results[1]
             if len(points) != 1:
-                cv2.imwrite("imgsl/{}_{}_{}_{}{}.jpg".format(len(points),age, sex, id, gm(link)), chip)
+                cv2.imwrite("imgsl/{}_{}_{}_{}{}.jpg".format(len(points),age, sex, id, gm(link)), imgc)
                 continue
 
             # extract aligned face chips
