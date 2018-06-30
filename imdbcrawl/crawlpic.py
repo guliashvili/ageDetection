@@ -27,7 +27,7 @@ def gm(link):
 
 
 def download(i):
-    detector = MtcnnDetector(model_folder='model', num_worker = int(CPU/4) , accurate_landmark = False)
+    detector = MtcnnDetector(model_folder='model', num_worker = int(CPU/4.5) , accurate_landmark = False)
     lst = json.loads(open('data.txt', 'r').read())
     lst = {list(elem.keys())[0]:list(elem.values())[0] for elem in lst}
     items = list(lst.items())
@@ -46,7 +46,7 @@ def download(i):
             try:
                 if age < 5 or age > 100:
                     continue
-                print(link,age)
+                #print(link,age)
                 processed += 1
                 if processed % 1000 == 0:
                     print("Thread {}: printed {} / {}".format(i, printed, processed))
@@ -97,7 +97,7 @@ def download(i):
 
 # download(0)
 
-procs = [Process(target=download, args = (i,)) for i in range(int(CPU/4))]
+procs = [Process(target=download, args = (i,)) for i in range(int(CPU/4.5))]
 for p in procs:
     p.start()
 for p in procs:
