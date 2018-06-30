@@ -1,4 +1,4 @@
-CPU = int(72)
+CPU = int(72/3)
 
 
 #import urllib.request
