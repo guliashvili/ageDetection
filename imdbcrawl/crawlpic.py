@@ -28,7 +28,7 @@ def gm(link):
 def get_items():
     items = json.loads(open('data.txt', 'r').read())
     items = {list(elem.keys())[0]:list(elem.values())[0] for elem in items}
-    items = list(lst.items())
+    items = list(items.items())
 
     links = {}
 
