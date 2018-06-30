@@ -35,6 +35,8 @@ def download(i):
     le = len(items)
     items = items[int(le * i / CPU): min(le, int(le * (i + 1) / CPU)) ]
     detector = MtcnnDetector(model_folder='model', ctx=mx.cpu(0), num_worker = 1 , accurate_landmark = False)
+    processed = 0
+    printed = 0
 
     for item in items:
         id = item[0]
@@ -42,6 +44,9 @@ def download(i):
 
         sex = value[0]
         for link, age in value[1]:
+            processed += 1
+            if processed % 1000 == 0:
+                print("Thread {}: printed {} / {}".format(i, printed, processed))
 
             while True:
                 try:
@@ -73,6 +78,7 @@ def download(i):
             # extract aligned face chips
             chips = detector.extract_image_chips(img, points, 255, 0.37)
             for chip in chips:
+                printed += 1
                 cv2.imwrite("imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)), chip)\
 
 
