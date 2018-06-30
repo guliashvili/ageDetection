@@ -1,10 +1,21 @@
-import urllib.request
+#import urllib.request
+import requests
 # import urllib
 from multiprocessing import Pool
 import multiprocessing
 import time
 import json
 import sys
+import mxnet as mx
+from mtcnn_detector import MtcnnDetector
+import cv2
+import os
+import time
+import os
+import re
+import random
+import numpy as np
+
 
 def gm(link):
     link = link.split('/images/M/')[1]
@@ -28,7 +39,13 @@ def download(item):
 
     sex = value[0]
     for link, age in value[1]:
-        urllib.request.urlretrieve(link, "imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)))
+        imgc = requests.get(link).content
+        x = np.fromstring(imgc, dtype='uint8')
 
-p = Pool(50)
-p.map(download, lst.items())
+        #decode the array into an image
+        img = cv2.imdecode(x, cv2.IMREAD_UNCHANGED)
+        cv2.imwrite("imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)), img)
+        #urllib.request.urlretrieve(link, )
+
+p = Pool(72)
+p.map(download, lst.items()[:60])

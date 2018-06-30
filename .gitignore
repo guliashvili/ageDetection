@@ -1,3 +1,4 @@
+*photoOUT*
 imdbcrawl/title.ratings.tsv
 imdbcrawl/name.basics.tsv
 *.pyc
