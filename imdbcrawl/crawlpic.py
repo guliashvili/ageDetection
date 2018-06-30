@@ -30,20 +30,7 @@ def gm(link):
 
 def doit(img, output_filename, detector):
 
-    # run detector
-    results = detector.detect_face(img)
 
-
-    if results is not None:
-
-        points = results[1]
-        if len(points) != 1:
-            return False
-
-        # extract aligned face chips
-        chips = detector.extract_image_chips(img, points, 255, 0.37)
-        for chip in chips:
-            cv2.imwrite(output_filename, chip)
 
 
 def download(i):
@@ -51,7 +38,7 @@ def download(i):
     lst = {list(elem.keys())[0]:list(elem.values())[0] for elem in lst}
     items = list(lst.items())[:10]
     le = len(items)
-    items = items[int(le * i / CPU): min(le, int(le * (i + 1) / CPU)) ]
+    items = items[int(le * i / CPU): min(le, int(le * (i + 1) / CPU)) ][:1]
     detector = MtcnnDetector(model_folder='model', ctx=mx.cpu(0), num_worker = 1 , accurate_landmark = False)
 
     for item in items:
@@ -78,7 +65,20 @@ def download(i):
 
             #decode the array into an image
             img = cv2.imdecode(x, cv2.IMREAD_UNCHANGED)
-            doit(img, "imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)), detector)
+
+            # run detector
+            results = detector.detect_face(img)
+
+
+            if results is not None:
+                points = results[1]
+                if len(points) != 1:
+                    return False
+
+                # extract aligned face chips
+                chips = detector.extract_image_chips(img, points, 255, 0.37)
+                for chip in chips:
+                    cv2.imwrite("imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)), chip)\
 
 
 
