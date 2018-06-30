@@ -119,10 +119,12 @@ def get_face(margin, image_size, output_dir, i, al, image_path, pnet, rnet, onet
     img_size = np.asarray(img.shape)[0:2]
     det = np.squeeze(det)
     bb = np.zeros(4, dtype=np.int32)
-    bb[0] = np.maximum(det[0] - margin / 2, 0)
-    bb[1] = np.maximum(det[1] - margin / 2, 0)
-    bb[2] = np.minimum(det[2] + margin / 2, img_size[1])
-    bb[3] = np.minimum(det[3] + margin / 2, img_size[0])
+    A = (det[3] - det[1]) * margin / 200.0
+    B = (det[2] - det[0]) * margin / 200.0
+    bb[0] = np.maximum(det[0] - B, 0)
+    bb[1] = np.maximum(det[1] - A, 0)
+    bb[2] = np.minimum(det[2] + B, img_size[1])
+    bb[3] = np.minimum(det[3] + A, img_size[0])
     cropped = img[bb[1]:bb[3], bb[0]:bb[2], :]
     scaled = misc.imresize(cropped, (image_size, image_size), interp='bilinear')
     misc.imsave(output_filename, scaled)
