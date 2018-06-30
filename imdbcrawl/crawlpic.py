@@ -1,4 +1,4 @@
-CPU = int(72/4)
+CPU = int(72/4.5)
 
 
 #import urllib.request
@@ -80,12 +80,12 @@ def download(i):
                 try:
                     imgc = requests.get(link)
                     if imgc.status_code != requests.codes.ok:
-                        print('oh1')
+                        print('Thread {} oh1 {} link {}'.format(i, imgc.status_code, link))
                         raise Exception('ax')
                     imgc = imgc.content
                     break
                 except:
-                    print('oh2')
+                    print('Thread {} oh2 {} link {}'.format(i, imgc.status_code, link))
                     time.sleep(60)
                     continue
 
@@ -117,12 +117,12 @@ def download(i):
                 cv2.imwrite("imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)), chip)
 
         except:
-            print("ups big exception {}".format(link))
+            print("Thread {} Unexpected error: {}".format(i, sys.exc_info()[0]))
 
 
 # download(0)
 
-procs = [Process(target=download, args = (i,)) for i in range(int(CPU/4.5))]
+procs = [Process(target=download, args = (i,)) for i in range(int(CPU))]
 for p in procs:
     p.start()
 for p in procs:
