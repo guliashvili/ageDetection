@@ -63,7 +63,6 @@ def download(i):
     items = get_items()
     print(len(items))
 
-    items = items[:1000]
     le = len(items)
     items = items[int(le * i / CPU): min(le, int(le * (i + 1) / CPU))]
 
