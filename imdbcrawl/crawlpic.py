@@ -68,8 +68,8 @@ def download(i):
             #decode the array into an image
             imgc = cv2.imdecode(imgc, cv2.IMREAD_UNCHANGED)
             height, width, _ = imgc.shape
-            if height + width > 2000:
-                mult = max(0.5, 1000.0/max(height,width))
+            if height + width > 1000:
+                mult = max(0.5, 500.0/max(height,width))
                 imgc = cv2.resize(imgc, (0,0), fx=mult, fy=mult)
 
             # run detector
