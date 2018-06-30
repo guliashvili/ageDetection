@@ -4,12 +4,28 @@ from mtcnn_detector import MtcnnDetector
 import cv2
 import os
 import time
-import common
+import os
+import re
+import random
+
+
+def get_images(dir):
+    dir = os.path.expanduser(dir)
+    files = (os.path.join(dir, file) for file in os.listdir(dir))
+    files = [file for file in files if os.path.isfile(file)
+            and not file.endswith('.txt')
+            and '.' in file
+            and not file.endswith('.DS_Store')
+            and not file.endswith('.csv')
+            and not file.endswith('.lst')
+            and not file.endswith('.bin')]
+
+    return files
 
 detector = MtcnnDetector(model_folder='model', ctx=mx.cpu(0), num_worker = 4 , accurate_landmark = False)
 
 
-dataset = common.get_images('photoIN')
+dataset = get_images('photoIN')
 for imgp in dataset:
     img = cv2.imread(imgp)
 
