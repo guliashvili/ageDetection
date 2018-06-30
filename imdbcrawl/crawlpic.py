@@ -97,7 +97,7 @@ def download(i):
 
 # download(0)
 
-procs = [Process(target=download, args = (i,)) for i in range(int(CPU/6))]
+procs = [Process(target=download, args = (i,)) for i in range(int(CPU/4))]
 for p in procs:
     p.start()
 for p in procs:
