@@ -1,4 +1,4 @@
-CPU = int(72/8)
+CPU = int(72/7)
 
 
 #import urllib.request
@@ -62,7 +62,7 @@ def get_items():
     return items
 def download(i):
     time.sleep(random.random()*10)
-    detector = MtcnnDetector(model_folder='model', num_worker = 2 , accurate_landmark = False)
+    detector = MtcnnDetector(model_folder='model', num_worker = 1 , accurate_landmark = False)
     items = get_items()
     print(len(items))
 
