@@ -39,7 +39,7 @@ for imgp in dataset:
 
         total_boxes = results[0]
         points = results[1]
-        if total_boxes != 1:
+        if len(points) != 1:
             continue
 
         # extract aligned face chips
