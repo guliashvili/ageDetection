@@ -36,15 +36,12 @@ for _, value in lst.items():
     num_of_pic += len(value[1])
 print(num_of_pic)
 
-detector = MtcnnDetector(model_folder='model', ctx=mx.cpu(0), num_worker = CPU , accurate_landmark = False)
-lock = Lock()
 
-def doit(img, output_filename):
+def doit(img, output_filename, detector):
 
     # run detector
-    lock.acquire()
     results = detector.detect_face(img)
-    lock.release()
+
 
     if results is not None:
 
@@ -57,7 +54,10 @@ def doit(img, output_filename):
         for chip in chips:
             cv2.imwrite(output_filename, chip)
 
+
 def download(items):
+    detector = MtcnnDetector(model_folder='model', ctx=mx.cpu(0), num_worker = 10 , accurate_landmark = False)
+
     for item in items:
         id = item[0]
         value = item[1]
@@ -82,10 +82,10 @@ def download(items):
 
             #decode the array into an image
             img = cv2.imdecode(x, cv2.IMREAD_UNCHANGED)
-            doit(img, "imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)))
+            doit(img, "imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)), detector)
 
 
-items = lst.items()[:10]
+items = list(lst.items())[:10]
 le = len(items)
 procs = [Process(target=download, args = (lst[int(le * i / CPU): min(le, int(le * (i + 1) / CPU)) ],)) for i in range(CPU)]
 for p in procs:
