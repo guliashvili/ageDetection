@@ -63,17 +63,17 @@ def download(i):
 
             # run detector
             results = detector.detect_face(img)
+            if results is None:
+                continue
 
+            points = results[1]
+            if len(points) != 1:
+                continue
 
-            if results is not None:
-                points = results[1]
-                if len(points) != 1:
-                    return False
-
-                # extract aligned face chips
-                chips = detector.extract_image_chips(img, points, 255, 0.37)
-                for chip in chips:
-                    cv2.imwrite("imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)), chip)\
+            # extract aligned face chips
+            chips = detector.extract_image_chips(img, points, 255, 0.37)
+            for chip in chips:
+                cv2.imwrite("imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)), chip)\
 
 
 
