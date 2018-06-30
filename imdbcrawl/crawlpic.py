@@ -43,6 +43,8 @@ def download(i):
 
         sex = value[0]
         for link, age in value[1]:
+            if age < 5 or age > 100:
+                continue
             print(link,age)
             processed += 1
             if processed % 1000 == 0:
