@@ -43,50 +43,56 @@ def download(i):
 
         sex = value[0]
         for link, age in value[1]:
-            if age < 5 or age > 100:
-                continue
-            print(link,age)
-            processed += 1
-            if processed % 1000 == 0:
-                print("Thread {}: printed {} / {}".format(i, printed, processed))
+            try:
+                if age < 5 or age > 100:
+                    continue
+                print(link,age)
+                processed += 1
+                if processed % 1000 == 0:
+                    print("Thread {}: printed {} / {}".format(i, printed, processed))
 
-            while True:
-                try:
-                    imgc = requests.get(link)
-                    if imgc.status_code != requests.codes.ok:
-                        print('oh1')
-                        raise Exception('ax')
-                    imgc = imgc.content
-                    break
-                except:
-                    print('oh2')
-                    time.sleep(60)
+                while True:
+                    try:
+                        imgc = requests.get(link)
+                        if imgc.status_code != requests.codes.ok:
+                            print('oh1')
+                            raise Exception('ax')
+                        imgc = imgc.content
+                        break
+                    except:
+                        print('oh2')
+                        time.sleep(60)
+                        continue
+
+                imgc = np.fromstring(imgc, dtype='uint8')
+
+                #decode the array into an image
+                imgc = cv2.imdecode(imgc, cv2.IMREAD_UNCHANGED)
+                if len(imgc.shape) == 2:
+                    imgc = cv2.cvtColor(imgc, cv2.CV_GRAY2RGB)
+                height, width, _ = imgc.shape
+                if height + width > 1700:
+                    mult = min(0.5, 1000.0/max(height,width))
+                    imgc = cv2.resize(imgc, (0,0), fx=mult, fy=mult)
+
+                # run detector
+                results = detector.detect_face(imgc)
+                if results is None:
                     continue
 
-            imgc = np.fromstring(imgc, dtype='uint8')
+                points = results[1]
+                if len(points) != 1:
+                    cv2.imwrite("imgsl/{}_{}_{}_{}{}.jpg".format(len(points),age, sex, id, gm(link)), imgc)
+                    continue
 
-            #decode the array into an image
-            imgc = cv2.imdecode(imgc, cv2.IMREAD_UNCHANGED)
-            height, width, _ = imgc.shape
-            if height + width > 1700:
-                mult = min(0.5, 1000.0/max(height,width))
-                imgc = cv2.resize(imgc, (0,0), fx=mult, fy=mult)
+                # extract aligned face chips
+                imgc = detector.extract_image_chips(imgc, points, 255, 0.37)
+                for chip in imgc:
+                    printed += 1
+                    cv2.imwrite("imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)), chip)
 
-            # run detector
-            results = detector.detect_face(imgc)
-            if results is None:
-                continue
-
-            points = results[1]
-            if len(points) != 1:
-                cv2.imwrite("imgsl/{}_{}_{}_{}{}.jpg".format(len(points),age, sex, id, gm(link)), imgc)
-                continue
-
-            # extract aligned face chips
-            imgc = detector.extract_image_chips(imgc, points, 255, 0.37)
-            for chip in imgc:
-                printed += 1
-                cv2.imwrite("imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)), chip)
+            except:
+                print("ups big exception {}".format(link))
 
 
 # download(0)
