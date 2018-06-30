@@ -108,9 +108,9 @@ def get_face(margin, image_size, output_dir, i, al, image_path, pnet, rnet, onet
     if bounding_boxes.shape[0] != 1:
         return False
 
-    # img = align(img, points)
-    # misc.imsave(output_filename, img)
-    # return True
+    img = align(img, points)
+    misc.imsave(output_filename, img)
+    return True
 
     img, padd = pad(img, margin)
     det = bounding_boxes[:, 0:4]
