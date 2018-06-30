@@ -62,7 +62,7 @@ def get_items():
     return items
 def download(i):
     time.sleep(random.random()*10)
-    detector = MtcnnDetector(model_folder='model', num_worker = CPU , accurate_landmark = False)
+    detector = MtcnnDetector(model_folder='model', num_worker = 2 , accurate_landmark = False)
     items = get_items()
     print(len(items))
 
