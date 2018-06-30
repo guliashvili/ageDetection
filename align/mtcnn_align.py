@@ -74,6 +74,60 @@ def to_rgb(img):
     ret[:, :, 0] = ret[:, :, 1] = ret[:, :, 2] = img
     return ret
 
+minsize = 20  # minimum size of face
+threshold = [0.6, 0.7, 0.7]  # three steps's threshold
+factor = 0.709  # scale factor
+
+
+def get_face(margin, image_size, output_dir, i, al, image_path, pnet, rnet, onet):
+    if hash(image_path) % al != i:
+        return False
+    filename = os.path.splitext(os.path.split(image_path)[1])[0]
+    output_filename = os.path.join(output_dir, filename + '.png')
+
+    if os.path.exists(output_filename):
+        return False
+
+    img = None
+    try:
+        img = misc.imread(image_path)
+    except (IOError, ValueError, IndexError) as e:
+        errorMessage = '{}: {}'.format(image_path, e)
+        print(errorMessage)
+        return False
+
+    if img.ndim < 2:
+        print('Unable to align "%s"' % image_path)
+        # text_file.write('%s\n' % (output_filename))
+        return False
+    if img.ndim == 2:
+        img = to_rgb(img)
+    img = img[:, :, 0:3]
+
+    bounding_boxes, points = detect_face.detect_face(img, minsize, pnet, rnet, onet, threshold,factor)
+    if bounding_boxes.shape[0] != 1:
+        return False
+
+    # img = align(img, points)
+    # misc.imsave(output_filename, img)
+    # return True
+
+    img, padd = pad(img, args.margin)
+    det = bounding_boxes[:, 0:4]
+    det += padd
+
+    img_size = np.asarray(img.shape)[0:2]
+    det = np.squeeze(det)
+    bb = np.zeros(4, dtype=np.int32)
+    bb[0] = np.maximum(det[0] - margin / 2, 0)
+    bb[1] = np.maximum(det[1] - margin / 2, 0)
+    bb[2] = np.minimum(det[2] + margin / 2, img_size[1])
+    bb[3] = np.minimum(det[3] + margin / 2, img_size[0])
+    cropped = img[bb[1]:bb[3], bb[0]:bb[2], :]
+    scaled = misc.imresize(cropped, (image_size, image_size), interp='bilinear')
+    misc.imsave(output_filename, scaled)
+    return True
+
 
 def main(args, i, al):
     sleep(random.random())
@@ -93,63 +147,16 @@ def main(args, i, al):
         with sess.as_default():
             pnet, rnet, onet = detect_face.create_mtcnn(sess, None)
 
-    minsize = 20  # minimum size of face
-    threshold = [0.6, 0.7, 0.7]  # three steps's threshold
-    factor = 0.709  # scale factor
-
     nrof_images_total = 0
     nrof_successfully_aligned = 0
     for image_path in dataset:
-        if hash(image_path) % al != i:
-            continue
         nrof_images_total += 1
-        filename = os.path.splitext(os.path.split(image_path)[1])[0]
-        output_filename = os.path.join(output_dir, filename + '.png')
+
         if math.floor(100.0 * nrof_images_total / len(dataset)) != math.floor(
                 100.0 * (nrof_images_total - 1) / len(dataset)):
             print(math.floor(100.0 * nrof_images_total / len(dataset)), '%')
-
-        if not os.path.exists(output_filename):
-            try:
-                img = misc.imread(image_path)
-            except (IOError, ValueError, IndexError) as e:
-                errorMessage = '{}: {}'.format(image_path, e)
-                print(errorMessage)
-            else:
-                if img.ndim < 2:
-                    print('Unable to align "%s"' % image_path)
-                    # text_file.write('%s\n' % (output_filename))
-                    continue
-                if img.ndim == 2:
-                    img = to_rgb(img)
-                img = img[:, :, 0:3]
-                #print('shape', img.shape)
-
-                bounding_boxes, points = detect_face.detect_face(img, minsize, pnet, rnet, onet, threshold,
-                                                                 factor)
-                if bounding_boxes.shape[0] == 1:
-                    # img = align(img, points)
-                    # misc.imsave(output_filename, img)
-                    # continue
-                    # bounding_boxes, points = detect_face.detect_face(img, minsize, pnet, rnet, onet, threshold,
-                    #                                                  factor)
-                    # if bounding_boxes.shape[0] == 1:
-                    img, padd = pad(img, args.margin)
-
-                    det = bounding_boxes[:, 0:4]
-                    det += padd
-
-                    img_size = np.asarray(img.shape)[0:2]
-                    det = np.squeeze(det)
-                    bb = np.zeros(4, dtype=np.int32)
-                    bb[0] = np.maximum(det[0] - args.margin / 2, 0)
-                    bb[1] = np.maximum(det[1] - args.margin / 2, 0)
-                    bb[2] = np.minimum(det[2] + args.margin / 2, img_size[1])
-                    bb[3] = np.minimum(det[3] + args.margin / 2, img_size[0])
-                    cropped = img[bb[1]:bb[3], bb[0]:bb[2], :]
-                    scaled = misc.imresize(cropped, (args.image_size, args.image_size), interp='bilinear')
-                    nrof_successfully_aligned += 1
-                    misc.imsave(output_filename, scaled)
+        if get_face(args.margin, args.img_size, args.output_dir, i, al, image_path, pnet, rnet, onet):
+            nrof_successfully_aligned += 1
 
     print('Aligned %d/%d' % (nrof_successfully_aligned, nrof_images_total))
 
