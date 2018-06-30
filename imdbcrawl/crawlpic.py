@@ -26,7 +26,7 @@ def gm(link):
 
 
 def download(i):
-    detector = MtcnnDetector(model_folder='model', ctx=mx.cpu(0), num_worker = 1 , accurate_landmark = False)
+    detector = MtcnnDetector(model_folder='model', num_worker = CPU , accurate_landmark = False)
     lst = json.loads(open('data.txt', 'r').read())
     lst = {list(elem.keys())[0]:list(elem.values())[0] for elem in lst}
     items = list(lst.items())[:10]

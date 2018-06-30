@@ -18,11 +18,11 @@ class MtcnnDetector(object):
     def __init__(self,
                  model_folder='.',
                  minsize = 20,
-                 threshold = [0.6, 0.7, 0.7],
+                 threshold = [0.6, 0.7, 0.8],
                  factor = 0.709,
                  num_worker = 1,
                  accurate_landmark = False,
-                 ctx=mx.cpu()):
+                 ):
         """
             Initialize the detector
 
@@ -51,14 +51,14 @@ class MtcnnDetector(object):
 
         self.PNets = []
         for i in range(num_worker):
-            workner_net = mx.model.FeedForward.load(models[0], 1, ctx=ctx)
+            workner_net = mx.model.FeedForward.load(models[0], 1)
             self.PNets.append(workner_net)
 
         self.Pool = Pool(num_worker)
 
-        self.RNet = mx.model.FeedForward.load(models[1], 1, ctx=ctx)
-        self.ONet = mx.model.FeedForward.load(models[2], 1, ctx=ctx)
-        self.LNet = mx.model.FeedForward.load(models[3], 1, ctx=ctx)
+        self.RNet = mx.model.FeedForward.load(models[1], 1)
+        self.ONet = mx.model.FeedForward.load(models[2], 1)
+        self.LNet = mx.model.FeedForward.load(models[3], 1)
 
         self.minsize   = float(minsize)
         self.factor    = float(factor)
@@ -238,7 +238,7 @@ class MtcnnDetector(object):
         sliced_index = self.slice_index(len(scales))
         total_boxes = []
         for batch in sliced_index:
-            local_boxes = map( detect_first_stage_warpper, \
+            local_boxes = self.pool.map( detect_first_stage_warpper, \
                     izip(repeat(img), self.PNets[:len(batch)], [scales[i] for i in batch], repeat(self.threshold[0])) )
             total_boxes.extend(local_boxes)
 
