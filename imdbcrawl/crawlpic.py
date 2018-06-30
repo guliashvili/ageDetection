@@ -1,4 +1,4 @@
-CPU = 1
+CPU = 2
 
 
 #import urllib.request
@@ -33,7 +33,7 @@ def download(i):
     lst = {list(elem.keys())[0]:list(elem.values())[0] for elem in lst}
     items = list(lst.items())[:10]
     le = len(items)
-    items = items[int(le * i / CPU): min(le, int(le * (i + 1) / CPU)) ][:1]
+    items = items[int(le * i / CPU): min(le, int(le * (i + 1) / CPU)) ]
     detector = MtcnnDetector(model_folder='model', ctx=mx.cpu(0), num_worker = 1 , accurate_landmark = False)
 
     for item in items:
