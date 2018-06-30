@@ -22,7 +22,13 @@ for _, value in lst.items():
     num_of_pic += len(value[1])
 print(num_of_pic)
 
-for id, value in lst.items():
+def download(item):
+    id = item[0]
+    value = item[1]
+
     sex = value[0]
     for link, age in value[1]:
-        urllib.request.urlretrieve(link, "imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)))
+        urllib.request. vurlretrieve(link, "imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)))
+
+p = Pool(50)
+p.map(download, lst.items())
