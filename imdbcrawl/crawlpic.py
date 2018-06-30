@@ -97,7 +97,7 @@ def download(i):
             #decode the array into an image
             imgc = cv2.imdecode(imgc, cv2.IMREAD_UNCHANGED)
             if len(imgc.shape) == 2:
-                imgc = cv2.cvtColor(gray,cv2.COLOR_GRAY2RGB)
+                imgc = cv2.cvtColor(imgc,cv2.COLOR_GRAY2RGB)
             height, width, _ = imgc.shape
             if height + width > 1700:
                 mult = min(0.5, 1000.0/max(height,width))
