@@ -29,7 +29,7 @@ dataset = get_images('photoIN')
 for imgp in dataset:
     img = cv2.imread(imgp)
 
-    filename = os.path.splitext(os.path.split(img)[1])[0]
+    filename = os.path.splitext(os.path.split(imgp)[1])[0]
     output_filename = os.path.join('photoOUT', filename + '.png')
 
     # run detector
