@@ -60,7 +60,7 @@ le = len(items)
 
 
 def download(i):
-    detector = MtcnnDetector(model_folder='model', ctx=mx.cpu(0), num_worker = 10 , accurate_landmark = False)
+    detector = MtcnnDetector(model_folder='model', ctx=mx.cpu(0), num_worker = 1 , accurate_landmark = False)
 
     for item in items[int(le * i / CPU): min(le, int(le * (i + 1) / CPU)) ]:
         id = item[0]
