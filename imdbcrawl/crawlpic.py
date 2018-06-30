@@ -28,15 +28,6 @@ def gm(link):
     return link
 
 
-lst = json.loads(open('data.txt', 'r').read())
-lst = {list(elem.keys())[0]:list(elem.values())[0] for elem in lst}
-
-num_of_pic = 0
-for _, value in lst.items():
-    num_of_pic += len(value[1])
-print(num_of_pic)
-
-
 def doit(img, output_filename, detector):
 
     # run detector
@@ -55,14 +46,15 @@ def doit(img, output_filename, detector):
             cv2.imwrite(output_filename, chip)
 
 
-items = list(lst.items())[:10]
-le = len(items)
-
-
 def download(i):
+    lst = json.loads(open('data.txt', 'r').read())
+    lst = {list(elem.keys())[0]:list(elem.values())[0] for elem in lst}
+    items = list(lst.items())[:10]
+    le = len(items)
+    items = items[int(le * i / CPU): min(le, int(le * (i + 1) / CPU)) ]
     detector = MtcnnDetector(model_folder='model', ctx=mx.cpu(0), num_worker = 1 , accurate_landmark = False)
 
-    for item in items[int(le * i / CPU): min(le, int(le * (i + 1) / CPU)) ]:
+    for item in items:
         id = item[0]
         value = item[1]
 
