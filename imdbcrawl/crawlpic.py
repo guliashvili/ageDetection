@@ -1,4 +1,4 @@
-CPU = 1
+CPU = 2
 
 
 #import urllib.request
@@ -16,6 +16,7 @@ import os
 import re
 import random
 import numpy as np
+from multiprocessing import Process
 
 def gm(link):
     link = link.split('/images/M/')[1]
@@ -29,9 +30,9 @@ def download(i):
     detector = MtcnnDetector(model_folder='model', num_worker = CPU , accurate_landmark = False)
     lst = json.loads(open('data.txt', 'r').read())
     lst = {list(elem.keys())[0]:list(elem.values())[0] for elem in lst}
-    items = list(lst.items())[:10]
+    items = list(lst.items())
     le = len(items)
-    items = items[int(le * i / CPU): min(le, int(le * (i + 1) / CPU)) ]
+    items = items[int(le * i / CPU): min(le, int(le * (i + 1) / CPU))]
 
     processed = 0
     printed = 0
@@ -86,10 +87,10 @@ def download(i):
                 cv2.imwrite("imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)), chip)
 
 
-download(0)
-#
-# procs = [Process(target=download, args = (i,)) for i in range(CPU)]
-# for p in procs:
-#     p.start()
-# for p in procs:
-#     p.join()
+# download(0)
+
+procs = [Process(target=download, args = (i,)) for i in range(CPU)]
+for p in procs:
+    p.start()
+for p in procs:
+    p.join()
