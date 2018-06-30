@@ -1,3 +1,6 @@
+CPU = 1
+
+
 #import urllib.request
 import requests
 # import urllib
@@ -15,7 +18,7 @@ import os
 import re
 import random
 import numpy as np
-
+from multiprocessing import Process, Lock
 
 def gm(link):
     link = link.split('/images/M/')[1]
@@ -33,19 +36,59 @@ for _, value in lst.items():
     num_of_pic += len(value[1])
 print(num_of_pic)
 
-def download(item):
-    id = item[0]
-    value = item[1]
+detector = MtcnnDetector(model_folder='model', ctx=mx.cpu(0), num_worker = CPU , accurate_landmark = False)
+lock = Lock()
 
-    sex = value[0]
-    for link, age in value[1]:
-        imgc = requests.get(link).content
-        x = np.fromstring(imgc, dtype='uint8')
+def doit(img, output_filename):
 
-        #decode the array into an image
-        img = cv2.imdecode(x, cv2.IMREAD_UNCHANGED)
-        cv2.imwrite("imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)), img)
-        #urllib.request.urlretrieve(link, )
+    # run detector
+    lock.acquire()
+    results = detector.detect_face(img)
+    lock.release()
 
-p = Pool(72)
-p.map(download, lst.items()[:60])
+    if results is not None:
+
+        points = results[1]
+        if len(points) != 1:
+            return False
+
+        # extract aligned face chips
+        chips = detector.extract_image_chips(img, points, 255, 0.37)
+        for chip in chips:
+            cv2.imwrite(output_filename, chip)
+
+def download(items):
+    for item in items:
+        id = item[0]
+        value = item[1]
+
+        sex = value[0]
+        for link, age in value[1]:
+
+            while True:
+                try:
+                    imgcA = requests.get(link)
+                    if imgcA.status_code != requests.codes.ok:
+                        print('oh1')
+                        raise Exception('ax')
+                    imgc = imgcA.content
+                    break
+                except:
+                    print('oh2')
+                    time.sleep(60)
+                    continue
+
+            x = np.fromstring(imgc, dtype='uint8')
+
+            #decode the array into an image
+            img = cv2.imdecode(x, cv2.IMREAD_UNCHANGED)
+            doit(img, "imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)))
+
+
+items = lst.items()[:10]
+le = len(items)
+procs = [Process(target=download, args = (lst[int(le * i / CPU): min(le, int(le * (i + 1) / CPU)) ],)) for i in range(CPU)]
+for p in procs:
+    p.start()
+for p in procs:
+    p.join()
