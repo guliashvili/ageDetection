@@ -55,10 +55,14 @@ def doit(img, output_filename, detector):
             cv2.imwrite(output_filename, chip)
 
 
-def download(items):
+items = list(lst.items())[:10]
+le = len(items)
+
+
+def download(i):
     detector = MtcnnDetector(model_folder='model', ctx=mx.cpu(0), num_worker = 10 , accurate_landmark = False)
 
-    for item in items:
+    for item in items[int(le * i / CPU): min(le, int(le * (i + 1) / CPU)) ]:
         id = item[0]
         value = item[1]
 
@@ -85,9 +89,8 @@ def download(items):
             doit(img, "imgs/{}_{}_{}{}.jpg".format(age, sex, id, gm(link)), detector)
 
 
-items = list(lst.items())[:10]
-le = len(items)
-procs = [Process(target=download, args = (lst[int(le * i / CPU): min(le, int(le * (i + 1) / CPU)) ],)) for i in range(CPU)]
+
+procs = [Process(target=download, args = (i,)) for i in range(CPU)]
 for p in procs:
     p.start()
 for p in procs:
