@@ -79,10 +79,10 @@ def main(args):
         devs = [mx.gpu(i) for i in range(num_gpus)]
         mod = mx.mod.Module(symbol=symbol, context=devs)
         eval = None
-        if arg.accu == 'acc':
+        if args.accu == 'acc':
             eval = mx.metric.Accuracy()
-        elif arg.accu[0] == 'k':
-            eval = mx.metric.TopKAccuracy(int(arg.accu[1:]))
+        elif args.accu[0] == 'k':
+            eval = mx.metric.TopKAccuracy(int(args.accu[1:]))
         mod.fit(train, val,
             num_epoch=args.epoch,
             arg_params=arg_params,
