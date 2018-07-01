@@ -9,10 +9,9 @@ def main(args):
         from urllib import urlretrieve
 
     def download(url):
-        
-	filename = url.split("/")[-1]
+        filename = url.split("/")[-1]
         print(filename)
-	if not os.path.exists(filename):
+        if not os.path.exists(filename):
             urlretrieve(url, filename)
 
 
