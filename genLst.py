@@ -14,7 +14,7 @@ def gen_lst(dir, clas, testc, trainc):
                 for image in images:
                     name = os.path.basename(image)
                     print(name)
-                    age, gender, num, _ = name.replace('.', '_').split('_')
+                    age, gender, num = name.replace('.', '_').split('_')[:3]
                     if clas == 'age':
                         out = num + '\t' + age + '\t' + name
                     else:
