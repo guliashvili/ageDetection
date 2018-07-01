@@ -76,16 +76,17 @@ def main(args):
         devs = [mx.gpu(i) for i in range(num_gpus)]
         mod = mx.mod.Module(symbol=symbol, context=devs)
         mod.fit(train, val,
-            num_epoch=8,
+            num_epoch=args.epoch,
             arg_params=arg_params,
             aux_params=aux_params,
             allow_missing=True,
             batch_end_callback = mx.callback.Speedometer(batch_size, 10),
+            epoch_end_callback = mx.callback.do_checkpoint(args.name, 1),
             kvstore='device',
             optimizer='sgd',
             optimizer_params={'learning_rate':0.01},
             initializer=mx.init.Xavier(rnd_type='gaussian', factor_type="in", magnitude=2),
-            eval_metric='acc')
+            eval_metric=args.accu)
         metric = mx.metric.Accuracy()
         return mod.score(test, metric)
 
@@ -104,6 +105,9 @@ def main(args):
 def parse_arguments(argv):
     parser = argparse.ArgumentParser()
 
+    parser.add_argument('name', type=str, help='Name of training')
+    parser.add_argument('accu', type=str, help='error function')
+    parser.add_argument('epoch', type=int, help='num of epochs')
     parser.add_argument('lst', type=str, help='Train lst')
     parser.add_argument('num_gpus', type=int,
                         help='num_gpus', default=-1)
