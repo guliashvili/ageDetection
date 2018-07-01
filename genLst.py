@@ -8,6 +8,7 @@ import sys
 def gen_lst(dir, clas, testc, trainc):
     dir = os.path.expanduser(dir)
     images = common.get_images(dir)
+    c = 0
     with open(os.path.join(dir, 'lst_train.lst'), 'w') as train:
         with open(os.path.join(dir, 'lst_test.lst'), 'w') as test:
             with open(os.path.join(dir, 'lst_valid.lst'), 'w') as valid:
@@ -16,10 +17,10 @@ def gen_lst(dir, clas, testc, trainc):
                     print(name)
                     age, gender, num = name.replace('.', '_').split('_')[:3]
                     if clas == 'age':
-                        out = num + '\t' + age + '\t' + name
+                        out = str(c) + '\t' + age + '\t' + name
                     else:
-                        out = num + '\t' + gender + '\t' + name
-
+                        out = str(c) + '\t' + gender + '\t' + name
+                    c += 1
                     r = random.uniform(0, 1);
                     if r < testc:
                         f = test
