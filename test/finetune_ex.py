@@ -78,6 +78,11 @@ def main(args):
     def fit(symbol, arg_params, aux_params, train, val, test, batch_size, num_gpus):
         devs = [mx.gpu(i) for i in range(num_gpus)]
         mod = mx.mod.Module(symbol=symbol, context=devs)
+        eval = None
+        if arg.accu == 'acc':
+            eval = mx.metric.Accuracy()
+        elif arg.accu[0] == 'k':
+            eval = mx.metric.TopKAccuracy(int(arg.accu[1:]))
         mod.fit(train, val,
             num_epoch=args.epoch,
             arg_params=arg_params,
@@ -89,7 +94,7 @@ def main(args):
             optimizer='sgd',
             optimizer_params={'learning_rate':0.01},
             initializer=mx.init.Xavier(rnd_type='gaussian', factor_type="in", magnitude=2),
-            eval_metric=args.accu)
+            eval_metric=eval)
         metric = mx.metric.Accuracy()
         return mod.score(test, metric)
 
