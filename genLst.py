@@ -20,9 +20,9 @@ def gen_lst(dir, clas, testc, trainc):
                         out = str(c) + '\t' + age + '\t' + name
                     else:
                         if gender.lower() == 'm':
-                            gender = 0
+                            gender = '0'
                         elif gender.lower() == 'f':
-                            gender = 1
+                            gender = '1'
                         else:
                             raise Exception()
                         out = str(c) + '\t' + gender + '\t' + name
