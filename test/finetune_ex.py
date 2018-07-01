@@ -26,7 +26,8 @@ def main(args):
             data_shape          = data_shape,
             shuffle             = True,
             rand_crop           = False,
-            rand_mirror         = True)
+            rand_mirror         = True,
+            prefetch_buffer = 10*args.num_gpus)
         val = mx.io.ImageRecordIter(
             path_imgrec         = args.lst + 'valid.rec',
             data_name           = 'data',
@@ -34,7 +35,8 @@ def main(args):
             batch_size          = batch_size,
             data_shape          = data_shape,
             rand_crop           = False,
-            rand_mirror         = False)
+            rand_mirror         = False,
+            prefetch_buffer = 10 * args.num_gpus)
         test = mx.io.ImageRecordIter(
             path_imgrec         = args.lst + 'test.rec',
             data_name           = 'data',
@@ -42,7 +44,8 @@ def main(args):
             batch_size          = batch_size,
             data_shape          = data_shape,
             rand_crop           = False,
-            rand_mirror         = False)
+            rand_mirror         = False,
+            prefetch_buffer = 10*args.num_gpus)
         return (train, val, test)
 
 
@@ -90,7 +93,7 @@ def main(args):
         metric = mx.metric.Accuracy()
         return mod.score(test, metric)
 
-    num_classes = 100
+    num_classes = args.num
     batch_per_gpu = 64
     num_gpus = args.num_gpus
 
@@ -106,6 +109,7 @@ def parse_arguments(argv):
     parser = argparse.ArgumentParser()
 
     parser.add_argument('name', type=str, help='Name of training')
+    parser.add_argument('num', type=str, help='num classes')
     parser.add_argument('accu', type=str, help='error function')
     parser.add_argument('epoch', type=int, help='num of epochs')
     parser.add_argument('lst', type=str, help='Train lst')
