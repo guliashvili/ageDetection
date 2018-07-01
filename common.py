@@ -12,6 +12,8 @@ def get_images(dir):
             and not file.endswith('.DS_Store')
             and not file.endswith('.csv')
             and not file.endswith('.lst')
-            and not file.endswith('.bin')]
+            and not file.endswith('.bin')
+            and not file.endswith('.idx')
+            and not file.endswith('.rec')]
 
     return files
