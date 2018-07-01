@@ -90,7 +90,7 @@ def main(args):
         return mod.score(test, metric)
 
     num_classes = 100
-    batch_per_gpu = 256
+    batch_per_gpu = 128
     num_gpus = args.num_gpus
 
     (new_sym, new_args) = get_fine_tune_model(sym, arg_params, num_classes)
