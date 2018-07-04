@@ -61,7 +61,7 @@ def main(args):
         metric = mx.metric.Accuracy()
         return mod.score(test, metric)
 
-    batch_per_gpu = 64
+    batch_per_gpu = args.batch_per_gpu
     num_gpus = args.num_gpus
 
     batch_size = batch_per_gpu * num_gpus
@@ -80,6 +80,8 @@ def parse_arguments(argv):
     parser.add_argument('label', type=str, help='output label name')
     parser.add_argument('num_gpus', type=int,
                         help='num_gpus', default=-1)
+    parser.add_argument('batch_per_gpu', type=int,
+                        help='num_gpus', default=64)
     return parser.parse_args(argv)
 
 
