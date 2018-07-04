@@ -10,7 +10,7 @@ def main(args):
         train = mx.io.ImageRecordIter(
             path_imgrec         = args.lst + 'train.rec',
             data_name           = 'data',
-            label_name          = 'maintheend_label',
+            label_name          = args.label,
             batch_size          = batch_size,
             data_shape          = data_shape,
             shuffle             = True,
@@ -20,7 +20,7 @@ def main(args):
         val = mx.io.ImageRecordIter(
             path_imgrec         = args.lst + 'valid.rec',
             data_name           = 'data',
-            label_name          = 'maintheend_label',
+            label_name          = args.label,
             batch_size          = batch_size,
             data_shape          = data_shape,
             rand_crop           = False,
@@ -29,7 +29,7 @@ def main(args):
         test = mx.io.ImageRecordIter(
             path_imgrec         = args.lst + 'test.rec',
             data_name           = 'data',
-            label_name          = 'maintheend_label',
+            label_name          = args.label,
             batch_size          = batch_size,
             data_shape          = data_shape,
             rand_crop           = False,
@@ -77,6 +77,7 @@ def parse_arguments(argv):
     parser.add_argument('epochsave', type=int, help='epoch to start from')
     parser.add_argument('epoch', type=int, help='num of epochs')
     parser.add_argument('lst', type=str, help='Train lst')
+    parser.add_argument('label', type=str, help='output label name')
     parser.add_argument('num_gpus', type=int,
                         help='num_gpus', default=-1)
     return parser.parse_args(argv)

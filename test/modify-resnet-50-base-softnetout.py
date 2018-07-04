@@ -15,15 +15,13 @@ def main(args):
         all_layers = symbol.get_internals()
         net = all_layers[layer_name+'_output']
         net = mx.symbol.FullyConnected(data=net, num_hidden=num_classes, name='fc1')
-        net = mx.symbol.SoftmaxOutput(data=net, name='maintheend')
-        for k in arg_params:
-            print(k, arg_params[k])
+        net = mx.symbol.SoftmaxOutput(data=net, name='softmax')
+
         new_args = dict({k:arg_params[k] for k in arg_params if 'fc1' not in k})
         return (net, new_args)
 
 
     (new_sym, new_args) = get_fine_tune_model(sym, arg_params, args.num)
-    print(aux_params)
     mx.model.save_checkpoint(args.prefixout, 0, new_sym, new_args, aux_params)
 
 
