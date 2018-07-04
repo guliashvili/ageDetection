@@ -23,6 +23,7 @@ def main(args):
 
 
     (new_sym, new_args) = get_fine_tune_model(sym, arg_params, args.num)
+    print(aux_params)
     mx.model.save_checkpoint(args.prefixout, 0, new_sym, new_args, aux_params)
 
 
