@@ -10,7 +10,7 @@ def main(args):
         train = mx.io.ImageRecordIter(
             path_imgrec         = args.lst + 'train.rec',
             data_name           = 'data',
-            label_name          = 'maintheend_label,
+            label_name          = 'maintheend_label',
             batch_size          = batch_size,
             data_shape          = data_shape,
             shuffle             = True,
