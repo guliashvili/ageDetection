@@ -16,7 +16,7 @@ def main(args):
         net = all_layers[layer_name+'_output']
         net = mx.symbol.FullyConnected(data=net, num_hidden=num_classes, name='fc1')
         net = mx.symbol.softmax(data=net, name='softmax_intermediate')
-        net = mx.symbol.dot(lhs=net, rhs= mx.sym.arrange(1,num_classes + 1,1), name = "givi")
+        net = mx.symbol.dot(lhs=net, rhs= mx.symbol.arrange(1,num_classes + 1,1), name = "givi")
         net = mx.symbol.LinearRegressionOutput(net, name='softmax')
 
         new_args = dict({k:arg_params[k] for k in arg_params if 'fc1' not in k})
