@@ -57,7 +57,7 @@ def main(args):
             optimizer='sgd',
             optimizer_params={'learning_rate':0.01},
             initializer=mx.init.Xavier(rnd_type='gaussian', factor_type="in", magnitude=2),
-            eval_metric=eval)
+            eval_metric=mx.metric.create(args.metric))
         metric = mx.metric.Accuracy()
         return mod.score(test, metric)
 
@@ -82,6 +82,8 @@ def parse_arguments(argv):
                         help='num_gpus', default=-1)
     parser.add_argument('batch_per_gpu', type=int,
                         help='num_gpus', default=64)
+    parser.add_argument('metric', type=str,
+                        help='metric', default="acc")
     return parser.parse_args(argv)
 
 
