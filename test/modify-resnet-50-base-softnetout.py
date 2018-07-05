@@ -21,7 +21,7 @@ def main(args):
         return (net, new_args)
 
 
-    (new_sym, new_args) = get_fine_tune_model(sym, arg_params, args.num)
+    (new_sym, new_args) = get_fine_tune_model(sym, arg_params, args.num,  args.lastgoodlayer)
     mx.model.save_checkpoint(args.prefixout, 0, new_sym, new_args, aux_params)
 
 
@@ -32,6 +32,7 @@ def parse_arguments(argv):
     parser.add_argument('prefixout', type=str, help='prefix of base')
 
     parser.add_argument('num', type=int, help='num classes')
+    parser.add_argument('lastgoodlayer', type=str, help='last good lyer')
     return parser.parse_args(argv)
 
 
