@@ -53,7 +53,7 @@ def main(args):
             allow_missing=True,
             batch_end_callback = mx.callback.Speedometer(batch_size, 100),
             epoch_end_callback = mx.callback.do_checkpoint(args.prefix, 1),
-            kvstore='device',
+            kvstore='KVStore',
             optimizer='sgd',
             optimizer_params={'learning_rate':0.01},
             initializer=mx.init.Xavier(rnd_type='gaussian', factor_type="in", magnitude=2),
