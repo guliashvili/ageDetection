@@ -44,7 +44,7 @@ def main(args):
     def fit(symbol, arg_params, aux_params, train, val, test, batch_size, num_gpus):
         devs = [mx.gpu(i) for i in range(num_gpus)]
         mod = mx.mod.Module(symbol=symbol, context=devs)
-        metrics = [mx.metric.Accuracy(), mx.metric.TopKAccuracy(top_k=3, name="top 3"), mx.metric.TopKAccuracy(top_k=5, name="top 5"), mx.metric.RMSE(), mx.metric.MAE()]
+        metrics = [mx.metric.Accuracy(), mx.metric.RMSE(), mx.metric.MAE()]
 
         mod.fit(train, val,
             num_epoch=args.epoch,
