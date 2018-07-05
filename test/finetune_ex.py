@@ -46,7 +46,6 @@ def main(args):
         mod = mx.mod.Module(symbol=symbol, context=devs)
         metrics =  mx.metric.CompositeEvalMetric()
         metrics.add(mx.metric.Accuracy())
-        metrics.add(mx.metric.TopKAccuracy(top_k=1, name="top 1"))
         metrics.add(mx.metric.TopKAccuracy(top_k=3, name="top 3"))
         metrics.add(mx.metric.TopKAccuracy(top_k=5, name="top 5"))
         metrics.add(mx.metric.RMSE())
@@ -62,7 +61,7 @@ def main(args):
             optimizer='sgd',
             optimizer_params={'learning_rate':0.01},
             initializer=mx.init.Xavier(rnd_type='gaussian', factor_type="in", magnitude=2),
-            eval_metric=mx.metric.create(args.metric))
+            eval_metric=metrics)
         metric = mx.metric.Accuracy()
         return mod.score(test, metric)
 
@@ -87,8 +86,6 @@ def parse_arguments(argv):
                         help='num_gpus', default=-1)
     parser.add_argument('batch_per_gpu', type=int,
                         help='num_gpus', default=64)
-    parser.add_argument('metric', type=str,
-                        help='metric', default="acc")
     return parser.parse_args(argv)
 
 
