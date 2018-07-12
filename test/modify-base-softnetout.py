@@ -1,4 +1,4 @@
-/home/ubuntu/squeezenet11-baseimport os, sys
+import os, sys
 import argparse
 import mxnet as mx
 
@@ -14,10 +14,10 @@ def main(args):
         """
         all_layers = symbol.get_internals()
         net = all_layers[layer_name+'_output']
-        net = mx.symbol.FullyConnected(data=net, num_hidden=num_classes, name='fc1')
+        net = mx.symbol.FullyConnected(data=net, num_hidden=num_classes, name=args.problayer)
         net = mx.symbol.SoftmaxOutput(data=net, name=args.outlayer)
 
-        new_args = dict({k:arg_params[k] for k in arg_params if 'fc1' not in k})
+        new_args = dict({k:arg_params[k] for k in arg_params if args.problayer not in k})
         return (net, new_args)
 
 
@@ -33,6 +33,7 @@ def parse_arguments(argv):
 
     parser.add_argument('num', type=int, help='num classes')
     parser.add_argument('lastgoodlayer', type=str, help='last good lyer')
+    parser.add_argument('problayer', type=str, help='huge prob weight layer name')
     parser.add_argument('outlayer', type=str, help='out lyer name')
     return parser.parse_args(argv)
 
