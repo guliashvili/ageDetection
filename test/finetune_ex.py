@@ -56,7 +56,7 @@ def main(args):
             epoch_end_callback = mx.callback.do_checkpoint(args.prefix, 1),
             kvstore='KVStore',
             optimizer='sgd',
-            optimizer_params={'learning_rate':0.004},    # 0.01
+            optimizer_params={'learning_rate':0.004},
             initializer=mx.init.Xavier(rnd_type='gaussian', factor_type="in", magnitude=2),
             eval_metric=metrics)
 
