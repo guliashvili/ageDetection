@@ -48,6 +48,7 @@ def main(args):
 
         mod.fit(train, val,
             num_epoch=args.epoch,
+            begin_epoch=args.epochsave + 1,
             arg_params=arg_params,
             aux_params=aux_params,
             allow_missing=True,
