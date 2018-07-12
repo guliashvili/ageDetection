@@ -43,7 +43,7 @@ def main(args):
 
     def fit(symbol, arg_params, aux_params, train, val, test, batch_size, num_gpus):
         devs = [mx.gpu(i) for i in range(num_gpus)]
-        mod = mx.mod.Module(symbol=symbol, context=devs)
+        mod = mx.mod.Module(symbol=symbol, context=devs, label_names=[args.label])
         metrics = [mx.metric.Accuracy(), mx.metric.RMSE(), mx.metric.MAE()]
 
         mod.fit(train, val,
