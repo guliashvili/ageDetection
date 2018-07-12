@@ -22,7 +22,7 @@ def get_images(dir):
 
     return files
 
-detector = MtcnnDetector(model_folder='model', ctx=mx.cpu(0), num_worker = 4 , accurate_landmark = False)
+detector = MtcnnDetector(model_folder='model', num_worker = 1 , accurate_landmark = False)
 
 
 dataset = get_images('photoIN')
