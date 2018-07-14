@@ -16,7 +16,7 @@ def main(args):
             shuffle             = True,
             rand_crop           = False,
             rand_mirror         = True,
-            prefetch_buffer = 10*args.num_gpus)
+            prefetch_buffer = 1000*args.num_gpus)
         val = mx.io.ImageRecordIter(
             path_imgrec         = args.lst + 'valid.rec',
             data_name           = 'data',
@@ -25,7 +25,7 @@ def main(args):
             data_shape          = data_shape,
             rand_crop           = False,
             rand_mirror         = False,
-            prefetch_buffer = 10 * args.num_gpus)
+            prefetch_buffer = 1000 * args.num_gpus)
         test = mx.io.ImageRecordIter(
             path_imgrec         = args.lst + 'test.rec',
             data_name           = 'data',
@@ -34,7 +34,7 @@ def main(args):
             data_shape          = data_shape,
             rand_crop           = False,
             rand_mirror         = False,
-            prefetch_buffer = 10*args.num_gpus)
+            prefetch_buffer = 1000*args.num_gpus)
         return (train, val, test)
 
 
@@ -52,8 +52,8 @@ def main(args):
             arg_params=arg_params,
             aux_params=aux_params,
             allow_missing=True,
-            batch_end_callback = mx.callback.Speedometer(batch_size, 100),
-            epoch_end_callback = mx.callback.do_checkpoint(args.prefix, 1),
+            batch_end_callback = mx.callback.Speedometer(batch_size, 512),
+            epoch_end_callback = mx.callback.do_checkpoint(args.prefix, 50),
             kvstore='KVStore',
             optimizer='sgd',
             optimizer_params={'learning_rate':0.004},
