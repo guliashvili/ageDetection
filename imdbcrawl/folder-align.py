@@ -36,7 +36,7 @@ def get_images(dir):
             and not file.endswith('.rec')]
 
     return files
-CPU = 10
+CPU = 1
 
 
 def get_imgs(dir):
