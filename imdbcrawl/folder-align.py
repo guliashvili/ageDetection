@@ -16,14 +16,31 @@ import re
 import random
 import numpy as np
 from multiprocessing import Process
-import common
 import argparse
+import os
+import re
+import random
 
+
+def get_images(dir):
+    dir = os.path.expanduser(dir)
+    files = (os.path.join(dir, file) for file in os.listdir(dir))
+    files = [file for file in files if os.path.isfile(file)
+            and not file.endswith('.txt')
+            and '.' in file
+            and not file.endswith('.DS_Store')
+            and not file.endswith('.csv')
+            and not file.endswith('.lst')
+            and not file.endswith('.bin')
+            and not file.endswith('.idx')
+            and not file.endswith('.rec')]
+
+    return files
 CPU = 10
 
 
 def get_imgs(dir):
-    return list(set(common.get_images(dir)))
+    return list(set(get_images(dir)))
 
 
 def align(i, dir, outdir):
