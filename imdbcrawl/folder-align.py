@@ -70,10 +70,11 @@ def align(i, dir, outdir):
         else:
             points = results[1]
             if len(points) != 1:
+                imgc = [imgc]
                 print('could find more then one face ' + imgPath)
-
-            # extract aligned face chips
-            imgc = detector.extract_image_chips(imgc, points, 255, 0.37)
+            else:
+                # extract aligned face chips
+                imgc = detector.extract_image_chips(imgc, points, 255, 0.37)
 
         for chip in imgc:
             cv2.imwrite(outdir + name, chip)
