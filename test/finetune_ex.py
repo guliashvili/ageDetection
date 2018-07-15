@@ -82,7 +82,7 @@ def parse_arguments(argv):
     parser.add_argument('num_gpus', type=int,
                         help='num_gpus', default=-1)
     parser.add_argument('batch_per_gpu', type=int,
-                        help='num_gpus', default=64)
+                        help='batch_per_gpu', default=64)
     return parser.parse_args(argv)
 
 
