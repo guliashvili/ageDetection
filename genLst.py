@@ -14,7 +14,7 @@ def gen_lst(dir, clas, testc, trainc):
             with open(os.path.join(dir, 'lst_valid.lst'), 'w') as valid:
                 for image in images:
                     name = os.path.basename(image)
-                    age, gender, num = name.replace('.', '_').split('_')[:3]
+                    id, name, age, gender = name.replace('.', '_').split('_')[:4]
                     if clas == 'age':
                         out = str(c) + '\t' + age + '\t' + name
                     else:
