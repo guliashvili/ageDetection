@@ -16,7 +16,7 @@ def main(args):
             shuffle             = True,
             rand_crop           = False,
             rand_mirror         = True,
-            prefetch_buffer = 10 * batch_size * args.num_gpus)
+            prefetch_buffer = 20 * args.num_gpus)
         val = mx.io.ImageRecordIter(
             path_imgrec         = args.lst + 'valid.rec',
             data_name           = 'data',
@@ -25,7 +25,7 @@ def main(args):
             data_shape          = data_shape,
             rand_crop           = False,
             rand_mirror         = False,
-            prefetch_buffer = 10 * batch_size * args.num_gpus)
+            prefetch_buffer = 20 * args.num_gpus)
         test = mx.io.ImageRecordIter(
             path_imgrec         = args.lst + 'test.rec',
             data_name           = 'data',
@@ -34,7 +34,7 @@ def main(args):
             data_shape          = data_shape,
             rand_crop           = False,
             rand_mirror         = False,
-            prefetch_buffer = 10 * batch_size *args.num_gpus)
+            prefetch_buffer = 20 *args.num_gpus)
         return (train, val, test)
 
 

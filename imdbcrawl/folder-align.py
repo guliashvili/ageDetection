@@ -59,11 +59,13 @@ def align(i, dir, outdir):
         if results is None:
             imgc = [imgc]
             print('Could not find the face ' + imgPath)
+            continue
         else:
             points = results[1]
             if len(points) != 1:
                 imgc = [imgc]
                 print('could find more then one face ' + imgPath)
+                continue
             else:
                 # extract aligned face chips
                 imgc = detector.extract_image_chips(imgc, points, 255, 0.37)
