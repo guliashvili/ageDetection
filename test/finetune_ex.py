@@ -6,7 +6,7 @@ head = '%(asctime)-15s %(message)s'
 logging.basicConfig(level=logging.DEBUG, format=head)
 
 def main(args):
-    def get_iterators(batch_size, data_shape=(3, 224, 224)):
+    def get_iterators(batch_size, data_shape=(3, 255, 255)):
         train = mx.io.ImageRecordIter(
             path_imgrec         = args.lst + 'train.rec',
             data_name           = 'data',
@@ -16,6 +16,7 @@ def main(args):
             shuffle             = True,
             rand_crop           = False,
             rand_mirror         = True,
+            preprocess_threads =  16,
             prefetch_buffer = 20 * args.num_gpus)
         val = mx.io.ImageRecordIter(
             path_imgrec         = args.lst + 'valid.rec',
@@ -25,6 +26,7 @@ def main(args):
             data_shape          = data_shape,
             rand_crop           = False,
             rand_mirror         = False,
+            preprocess_threads =  16,
             prefetch_buffer = 20 * args.num_gpus)
         test = mx.io.ImageRecordIter(
             path_imgrec         = args.lst + 'test.rec',
@@ -34,6 +36,7 @@ def main(args):
             data_shape          = data_shape,
             rand_crop           = False,
             rand_mirror         = False,
+            preprocess_threads =  16,
             prefetch_buffer = 20 *args.num_gpus)
         return (train, val, test)
 
